@@ -1,0 +1,25 @@
+# Environment files and local secrets
+.env
+.env.*
+!.env.example
+
+# JavaScript dependencies and build output
+node_modules/
+dist/
+build/
+.next/
+coverage/
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Logs and local editor/OS files
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

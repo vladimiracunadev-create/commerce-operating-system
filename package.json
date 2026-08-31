@@ -1,0 +1,10 @@
+{
+  "name": "commerce-operating-system",
+  "private": true,
+  "packageManager": "pnpm@10.16.1",
+  "scripts": {
+    "dev:api": "pnpm --dir apps/api dev",
+    "build:api": "pnpm --dir apps/api build",
+    "start:api": "pnpm --dir apps/api start"
+  }
+}

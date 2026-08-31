@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Commerce OS Demo</title>
+<style>
+body{font-family:system-ui,Arial;max-width:1180px;margin:0 auto;padding:24px;background:#f5f6f8;color:#1e2530}h1{margin-bottom:4px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.card{background:#fff;border:1px solid #d9dde4;border-radius:12px;padding:16px;box-shadow:0 2px 8px #0000000d}input,select,textarea,button{width:100%;box-sizing:border-box;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #c7ccd4}button{background:#1e2530;color:white;cursor:pointer}.ok{color:#08783e}.muted{color:#697386;font-size:14px}pre{white-space:pre-wrap;max-height:280px;overflow:auto;background:#10151d;color:#dbe5f0;padding:12px;border-radius:8px}.pill{display:inline-block;padding:4px 8px;background:#eef1f5;border-radius:999px;margin:2px;font-size:12px}
+</style></head><body>
+<h1>Commerce Operating System</h1><div class="card" style="margin-bottom:16px"><b>Usuario demo:</b> <select id="role" style="display:inline-block;width:auto" onchange="refresh()"><option value="company_admin">Administrador</option><option value="warehouse">Bodega</option><option value="sales">Ventas</option><option value="marketing">Marketing</option><option value="accountant">Contador</option><option value="ai_operator">Operador IA</option><option value="auditor">Auditor</option></select> <span class="muted">Los endpoints aplican permisos por rol en este demo.</span></div><p class="muted">Demo integrado: catálogo → bodega → cliente → pedido → pago → documento tributario simulado → agente IA.</p>
+<div class="grid">
+<div class="card"><h3>1. Producto</h3><input id="sku" placeholder="SKU" value="DEMO-001"><input id="name" placeholder="Nombre" value="Producto Demo"><input id="price" type="number" value="10000" placeholder="Precio neto CLP"><button onclick="createProduct()">Crear producto</button></div>
+<div class="card"><h3>2. Bodega</h3><select id="productStock"></select><input id="qty" type="number" value="10"><button onclick="receiveStock()">Recibir stock</button></div>
+<div class="card"><h3>3. Cliente</h3><input id="customerName" value="Cliente Demo" placeholder="Nombre"><input id="customerEmail" value="cliente@example.com" placeholder="Email"><label><input id="consent" type="checkbox" style="width:auto"> Autoriza marketing</label><button onclick="createCustomer()">Crear cliente</button></div>
+<div class="card"><h3>4. Pedido</h3><select id="customerOrder"></select><select id="productOrder"></select><input id="orderQty" type="number" value="1"><button onclick="createOrder()">Crear pedido</button></div>
+<div class="card"><h3>5. Pago + DTE demo</h3><select id="orderSelect"></select><button onclick="payOrder()">Pagar (mock API)</button><button onclick="issueTax()">Emitir boleta (mock SII)</button><p class="muted">Producción reemplaza adaptadores por Webpay/Mercado Pago y SII/proveedor DTE.</p></div>
+<div class="card"><h3>6. Agente IA</h3><select id="agent"><option>brand</option><option>catalog</option><option>crm</option><option>partnerships</option><option>marketing</option></select><textarea id="goal">Analiza el demo y propón la siguiente acción comercial.</textarea><button onclick="runAgent()">Ejecutar agente</button></div>
+</div>
+<div class="card" style="margin-top:16px"><h3>Estado y trazabilidad</h3><button onclick="refresh()">Actualizar</button><div id="summary"></div><pre id="out">Cargando…</pre></div>
+<script>
+let state={}; const $=id=>document.getElementById(id); async function api(url,opt={}){let r=await fetch(url,{headers:{'content-type':'application/json','x-demo-role':$('role')?.value||'company_admin'},...opt});let j=await r.json();if(!r.ok)throw new Error(JSON.stringify(j));return j}
+async function refresh(){state=await api('/api/demo/state'); $('out').textContent=JSON.stringify(state,null,2); $('summary').innerHTML=`<span class=pill>Productos ${state.products.length}</span><span class=pill>Clientes ${state.customers.length}</span><span class=pill>Pedidos ${state.orders.length}</span><span class=pill>Pagos ${state.payments.length}</span><span class=pill>DTE ${state.tax_documents.length}</span><span class=pill>Eventos ${state.events.length}</span>`; fill('productStock',state.products,x=>x.id,x=>`${x.sku} · ${x.name}`);fill('productOrder',state.products,x=>x.id,x=>`${x.sku} · ${x.name}`);fill('customerOrder',state.customers,x=>x.id,x=>x.name);fill('orderSelect',state.orders,x=>x.id,x=>`${x.id.slice(0,8)} · ${x.status} · $${x.total_cents}`)}
+function fill(id,items,val,label){let old=$(id).value;$(id).innerHTML=items.map(x=>`<option value="${val(x)}">${label(x)}</option>`).join('');if(items.some(x=>val(x)===old))$(id).value=old}
+async function act(fn){try{let j=await fn();$('out').textContent=JSON.stringify(j,null,2);await refresh()}catch(e){alert(e.message)}}
+const post=(u,b)=>api(u,{method:'POST',body:JSON.stringify(b)});
+function createProduct(){act(()=>post('/api/products',{sku:$('sku').value,name:$('name').value,price_cents:+$('price').value}))}
+function receiveStock(){act(()=>post('/api/stock/receive',{product_id:$('productStock').value,quantity:+$('qty').value}))}
+function createCustomer(){act(()=>post('/api/customers',{name:$('customerName').value,email:$('customerEmail').value,consent_marketing:$('consent').checked}))}
+function createOrder(){act(()=>post('/api/orders',{customer_id:$('customerOrder').value,product_id:$('productOrder').value,quantity:+$('orderQty').value}))}
+function payOrder(){act(()=>post(`/api/orders/${$('orderSelect').value}/pay/mock`,{}))}
+function issueTax(){act(()=>post(`/api/orders/${$('orderSelect').value}/tax-document/mock`,{}))}
+function runAgent(){act(()=>post(`/api/agents/${$('agent').value}`,{goal:$('goal').value,context:{counts:{products:state.products.length,customers:state.customers.length,orders:state.orders.length}}}))}
+refresh();
+</script></body></html>
