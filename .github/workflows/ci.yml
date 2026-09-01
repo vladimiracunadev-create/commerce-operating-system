@@ -23,8 +23,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - name: Enable pnpm
@@ -38,8 +38,8 @@ jobs:
     name: Server smoke test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
       - name: Validate Compose
         run: docker compose config --quiet
@@ -61,8 +61,8 @@ jobs:
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
       - run: corepack enable
@@ -74,7 +74,7 @@ jobs:
           $artifact = Get-ChildItem dist/installers/*.exe | Select-Object -First 1
           if (-not $artifact -or $artifact.Length -lt 1MB) { throw "Windows artifact is missing or empty" }
           Write-Output "$($artifact.Name): $($artifact.Length) bytes"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: commerce-os-windows
           path: dist/installers/*.exe
@@ -85,11 +85,11 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 21
@@ -100,7 +100,7 @@ jobs:
       - run: ./android/gradlew -p android assembleDebug
       - name: Verify APK
         run: test -s android/app/build/outputs/apk/debug/app-debug.apk
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: commerce-os-android
           path: android/app/build/outputs/apk/debug/app-debug.apk
