@@ -20,7 +20,7 @@ jobs:
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm desktop:pack
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: windows, path: "dist/installers/*.exe", if-no-files-found: error }
 
   android:
@@ -37,7 +37,7 @@ jobs:
       - run: chmod +x android/gradlew
       - run: ./android/gradlew -p android assembleDebug
       - run: cp android/app/build/outputs/apk/debug/app-debug.apk CommerceOS-Demo-Android-${{ github.ref_name }}.apk
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: android, path: "CommerceOS-Demo-Android-*.apk", if-no-files-found: error }
 
   publish:
