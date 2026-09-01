@@ -100,6 +100,8 @@ CREATE TABLE IF NOT EXISTS tax_documents (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE UNIQUE INDEX IF NOT EXISTS tax_documents_one_per_order ON tax_documents(order_id);
+
 CREATE TABLE IF NOT EXISTS campaigns (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL REFERENCES companies(id),

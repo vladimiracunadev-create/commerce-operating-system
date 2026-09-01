@@ -22,7 +22,6 @@ services:
     environment:
       DATABASE_URL: postgresql://commerce:commerce@db:5432/commerce
       AGENTS_URL: http://agents:8100
-      JWT_SECRET: demo-secret
     ports: ["8080:8080"]
     depends_on:
       db:

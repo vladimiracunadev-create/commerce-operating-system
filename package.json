@@ -1,10 +1,44 @@
 {
   "name": "commerce-operating-system",
+  "version": "0.1.0",
   "private": true,
+  "description": "Sistema operativo comercial modular con demo web, Windows y Android.",
+  "author": "Vladimir Acuña",
+  "license": "MIT",
+  "type": "module",
   "packageManager": "pnpm@10.16.1",
+  "main": "apps/desktop/main.cjs",
   "scripts": {
+    "prepare:web": "node scripts/sync-demo-core.mjs",
+    "dev": "pnpm demo:local",
+    "demo:local": "pnpm prepare:web && node scripts/serve-web.mjs",
     "dev:api": "pnpm --dir apps/api dev",
     "build:api": "pnpm --dir apps/api build",
-    "start:api": "pnpm --dir apps/api start"
+    "start:api": "pnpm --dir apps/api start",
+    "test": "node --test tests/*.test.mjs",
+    "check:project": "node scripts/check-project.mjs",
+    "check": "pnpm prepare:web && pnpm test && pnpm build:api && pnpm check:project",
+    "desktop": "pnpm prepare:web && electron apps/desktop/main.cjs",
+    "desktop:pack": "pnpm prepare:web && electron-builder --win portable --publish never",
+    "android:sync": "pnpm prepare:web && cap sync android",
+    "android:open": "cap open android",
+    "android:build": "pnpm android:sync && cd android && gradlew.bat assembleDebug"
+  },
+  "devDependencies": {
+    "@capacitor/android": "8.5.1",
+    "@capacitor/cli": "8.5.1",
+    "@capacitor/core": "8.5.1",
+    "electron": "44.1.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.vladimiracuna.commerceos",
+    "productName": "Commerce OS Demo",
+    "directories": { "output": "dist/installers" },
+    "files": ["apps/desktop/**/*", "apps/web/**/*", "package.json"],
+    "win": {
+      "target": ["portable"],
+      "artifactName": "CommerceOS-Demo-Windows-${version}.${ext}"
+    }
   }
 }

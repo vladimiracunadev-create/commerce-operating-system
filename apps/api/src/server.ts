@@ -10,7 +10,8 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const app = Fastify({ logger: true });
 await app.register(cors, { origin: true });
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-await app.register(staticPlugin, { root: path.resolve(__dirname, '../../../web'), prefix: '/' });
+const webRoot = process.env.WEB_ROOT || path.resolve(__dirname, '../../web');
+await app.register(staticPlugin, { root: webRoot, prefix: '/' });
 
 const COMPANY = '00000000-0000-0000-0000-000000000001';
 const WAREHOUSE = '00000000-0000-0000-0000-000000000010';
@@ -40,7 +41,23 @@ async function emit(event_type:string, aggregate_type:string, aggregate_id:strin
   await pool.query(`INSERT INTO outbox_events(company_id,event_type,aggregate_type,aggregate_id,payload) VALUES($1,$2,$3,$4,$5)`, [COMPANY,event_type,aggregate_type,aggregate_id,payload]);
 }
 
+function requiredText(value:unknown, field:string) {
+  const clean = String(value ?? '').trim();
+  if (!clean) throw Object.assign(new Error(`${field} is required`), { statusCode: 400 });
+  return clean;
+}
+
+function positiveInteger(value:unknown, field:string) {
+  const number = Number(value);
+  if (!Number.isInteger(number) || number <= 0) throw Object.assign(new Error(`${field} must be a positive integer`), { statusCode: 400 });
+  return number;
+}
+
 app.get('/health', async () => ({ ok: true, service: 'commerce-os-api' }));
+app.get('/ready', async (_req, reply) => {
+  try { await pool.query('SELECT 1'); return { ok: true, database: 'ready' }; }
+  catch { return reply.code(503).send({ ok: false, database: 'unavailable' }); }
+});
 app.get('/api/demo/users', async () => (await pool.query('SELECT email,display_name,role FROM users WHERE company_id=$1 ORDER BY role',[COMPANY])).rows);
 app.get('/api/demo/state', async () => {
   const [products, stock, customers, orders, payments, docs, events] = await Promise.all([
@@ -55,9 +72,32 @@ app.get('/api/demo/state', async () => {
   return { products:products.rows, stock:stock.rows, customers:customers.rows, orders:orders.rows, payments:payments.rows, tax_documents:docs.rows, events:events.rows };
 });
 
+app.post('/api/demo/reset', async (req:any, reply:any) => {
+  if (!requireRole(req,reply,'admin')) return;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('DELETE FROM tax_documents WHERE order_id IN (SELECT id FROM orders WHERE company_id=$1)', [COMPANY]);
+    await client.query('DELETE FROM payments WHERE order_id IN (SELECT id FROM orders WHERE company_id=$1)', [COMPANY]);
+    await client.query('DELETE FROM order_items WHERE order_id IN (SELECT id FROM orders WHERE company_id=$1)', [COMPANY]);
+    await client.query('DELETE FROM orders WHERE company_id=$1', [COMPANY]);
+    await client.query('DELETE FROM agent_runs WHERE company_id=$1', [COMPANY]);
+    await client.query('DELETE FROM outbox_events WHERE company_id=$1', [COMPANY]);
+    await client.query('DELETE FROM stock WHERE warehouse_id=$1', [WAREHOUSE]);
+    await client.query('DELETE FROM products WHERE company_id=$1', [COMPANY]);
+    await client.query('DELETE FROM customers WHERE company_id=$1', [COMPANY]);
+    await client.query('COMMIT');
+    await emit('demo.workspace.reset','company',COMPANY,{mode:'demo'});
+    return { ok: true };
+  } catch(error) { await client.query('ROLLBACK'); throw error; } finally { client.release(); }
+});
+
 app.post('/api/products', async (req:any, reply:any) => {
   if (!requireRole(req,reply,'catalog')) return;
-  const { sku, name, price_cents, description='' } = req.body;
+  const { description='' } = req.body || {};
+  const sku = requiredText(req.body?.sku, 'sku').toUpperCase();
+  const name = requiredText(req.body?.name, 'name');
+  const price_cents = positiveInteger(req.body?.price_cents, 'price_cents');
   const r = await pool.query(`INSERT INTO products(company_id,sku,name,price_cents,description) VALUES($1,$2,$3,$4,$5) RETURNING *`,[COMPANY,sku,name,price_cents,description]);
   await emit('catalog.product.created','product',r.rows[0].id,r.rows[0]);
   return reply.code(201).send(r.rows[0]);
@@ -65,7 +105,8 @@ app.post('/api/products', async (req:any, reply:any) => {
 
 app.post('/api/stock/receive', async (req:any, reply:any) => {
   if (!requireRole(req,reply,'stock')) return;
-  const { product_id, quantity } = req.body;
+  const product_id = requiredText(req.body?.product_id, 'product_id');
+  const quantity = positiveInteger(req.body?.quantity, 'quantity');
   const r = await pool.query(`INSERT INTO stock(warehouse_id,product_id,quantity) VALUES($1,$2,$3)
     ON CONFLICT (warehouse_id,product_id) DO UPDATE SET quantity=stock.quantity+EXCLUDED.quantity, updated_at=now() RETURNING *`,[WAREHOUSE,product_id,quantity]);
   await emit('inventory.stock.received','product',product_id,{quantity,warehouse_id:WAREHOUSE});
@@ -74,7 +115,10 @@ app.post('/api/stock/receive', async (req:any, reply:any) => {
 
 app.post('/api/customers', async (req:any, reply:any) => {
   if (!requireRole(req,reply,'customers')) return;
-  const { name, email, phone='', tax_id='', consent_marketing=false } = req.body;
+  const { phone='', tax_id='', consent_marketing=false } = req.body || {};
+  const name = requiredText(req.body?.name, 'name');
+  const email = requiredText(req.body?.email, 'email').toLowerCase();
+  if (!/^\S+@\S+\.\S+$/.test(email)) return reply.code(400).send({error:'invalid_email'});
   const r = await pool.query(`INSERT INTO customers(company_id,name,email,phone,tax_id,consent_marketing) VALUES($1,$2,$3,$4,$5,$6) RETURNING *`,[COMPANY,name,email,phone,tax_id,consent_marketing]);
   await emit('crm.customer.created','customer',r.rows[0].id,{id:r.rows[0].id,consent_marketing});
   return reply.code(201).send(r.rows[0]);
@@ -82,7 +126,9 @@ app.post('/api/customers', async (req:any, reply:any) => {
 
 app.post('/api/orders', async (req:any, reply:any) => {
   if (!requireRole(req,reply,'orders')) return;
-  const { customer_id, product_id, quantity } = req.body;
+  const customer_id = requiredText(req.body?.customer_id, 'customer_id');
+  const product_id = requiredText(req.body?.product_id, 'product_id');
+  const quantity = positiveInteger(req.body?.quantity, 'quantity');
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -125,6 +171,8 @@ app.post('/api/orders/:id/tax-document/mock', async (req:any, reply:any) => {
   const order = (await pool.query('SELECT * FROM orders WHERE id=$1 AND company_id=$2',[req.params.id,COMPANY])).rows[0];
   if (!order) return reply.code(404).send({error:'order_not_found'});
   if (order.status !== 'paid') return reply.code(409).send({error:'order_must_be_paid'});
+  const existing = (await pool.query('SELECT * FROM tax_documents WHERE order_id=$1 LIMIT 1',[order.id])).rows[0];
+  if (existing) return reply.code(409).send({error:'tax_document_already_exists',tax_document_id:existing.id});
   const folio = `DEMO-${Date.now()}`;
   const d = (await pool.query(`INSERT INTO tax_documents(order_id,provider,document_type,folio,status,payload) VALUES($1,'mock-sii','boleta', $2,'issued',$3) RETURNING *`,[order.id,folio,{warning:'Demo only. Production DTE requires a certified SII integration/provider.'}])).rows[0];
   await emit('tax.document.issued','order',order.id,{tax_document_id:d.id,folio});

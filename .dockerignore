@@ -1,0 +1,11 @@
+.git
+.git-codex-hold
+.github
+node_modules
+dist
+android
+.gradle
+*.log
+.env
+.env.*
+!.env.example

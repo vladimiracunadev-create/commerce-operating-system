@@ -1,0 +1,11 @@
+{
+  "name": "Commerce Operating System Demo",
+  "short_name": "Commerce OS",
+  "description": "Demo operativa local-first de una plataforma comercial modular.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#07111f",
+  "lang": "es",
+  "icons": [{ "src": "./assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

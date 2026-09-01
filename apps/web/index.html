@@ -1,30 +1,152 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Commerce OS Demo</title>
-<style>
-body{font-family:system-ui,Arial;max-width:1180px;margin:0 auto;padding:24px;background:#f5f6f8;color:#1e2530}h1{margin-bottom:4px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.card{background:#fff;border:1px solid #d9dde4;border-radius:12px;padding:16px;box-shadow:0 2px 8px #0000000d}input,select,textarea,button{width:100%;box-sizing:border-box;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #c7ccd4}button{background:#1e2530;color:white;cursor:pointer}.ok{color:#08783e}.muted{color:#697386;font-size:14px}pre{white-space:pre-wrap;max-height:280px;overflow:auto;background:#10151d;color:#dbe5f0;padding:12px;border-radius:8px}.pill{display:inline-block;padding:4px 8px;background:#eef1f5;border-radius:999px;margin:2px;font-size:12px}
-</style></head><body>
-<h1>Commerce Operating System</h1><div class="card" style="margin-bottom:16px"><b>Usuario demo:</b> <select id="role" style="display:inline-block;width:auto" onchange="refresh()"><option value="company_admin">Administrador</option><option value="warehouse">Bodega</option><option value="sales">Ventas</option><option value="marketing">Marketing</option><option value="accountant">Contador</option><option value="ai_operator">Operador IA</option><option value="auditor">Auditor</option></select> <span class="muted">Los endpoints aplican permisos por rol en este demo.</span></div><p class="muted">Demo integrado: catálogo → bodega → cliente → pedido → pago → documento tributario simulado → agente IA.</p>
-<div class="grid">
-<div class="card"><h3>1. Producto</h3><input id="sku" placeholder="SKU" value="DEMO-001"><input id="name" placeholder="Nombre" value="Producto Demo"><input id="price" type="number" value="10000" placeholder="Precio neto CLP"><button onclick="createProduct()">Crear producto</button></div>
-<div class="card"><h3>2. Bodega</h3><select id="productStock"></select><input id="qty" type="number" value="10"><button onclick="receiveStock()">Recibir stock</button></div>
-<div class="card"><h3>3. Cliente</h3><input id="customerName" value="Cliente Demo" placeholder="Nombre"><input id="customerEmail" value="cliente@example.com" placeholder="Email"><label><input id="consent" type="checkbox" style="width:auto"> Autoriza marketing</label><button onclick="createCustomer()">Crear cliente</button></div>
-<div class="card"><h3>4. Pedido</h3><select id="customerOrder"></select><select id="productOrder"></select><input id="orderQty" type="number" value="1"><button onclick="createOrder()">Crear pedido</button></div>
-<div class="card"><h3>5. Pago + DTE demo</h3><select id="orderSelect"></select><button onclick="payOrder()">Pagar (mock API)</button><button onclick="issueTax()">Emitir boleta (mock SII)</button><p class="muted">Producción reemplaza adaptadores por Webpay/Mercado Pago y SII/proveedor DTE.</p></div>
-<div class="card"><h3>6. Agente IA</h3><select id="agent"><option>brand</option><option>catalog</option><option>crm</option><option>partnerships</option><option>marketing</option></select><textarea id="goal">Analiza el demo y propón la siguiente acción comercial.</textarea><button onclick="runAgent()">Ejecutar agente</button></div>
-</div>
-<div class="card" style="margin-top:16px"><h3>Estado y trazabilidad</h3><button onclick="refresh()">Actualizar</button><div id="summary"></div><pre id="out">Cargando…</pre></div>
-<script>
-let state={}; const $=id=>document.getElementById(id); async function api(url,opt={}){let r=await fetch(url,{headers:{'content-type':'application/json','x-demo-role':$('role')?.value||'company_admin'},...opt});let j=await r.json();if(!r.ok)throw new Error(JSON.stringify(j));return j}
-async function refresh(){state=await api('/api/demo/state'); $('out').textContent=JSON.stringify(state,null,2); $('summary').innerHTML=`<span class=pill>Productos ${state.products.length}</span><span class=pill>Clientes ${state.customers.length}</span><span class=pill>Pedidos ${state.orders.length}</span><span class=pill>Pagos ${state.payments.length}</span><span class=pill>DTE ${state.tax_documents.length}</span><span class=pill>Eventos ${state.events.length}</span>`; fill('productStock',state.products,x=>x.id,x=>`${x.sku} · ${x.name}`);fill('productOrder',state.products,x=>x.id,x=>`${x.sku} · ${x.name}`);fill('customerOrder',state.customers,x=>x.id,x=>x.name);fill('orderSelect',state.orders,x=>x.id,x=>`${x.id.slice(0,8)} · ${x.status} · $${x.total_cents}`)}
-function fill(id,items,val,label){let old=$(id).value;$(id).innerHTML=items.map(x=>`<option value="${val(x)}">${label(x)}</option>`).join('');if(items.some(x=>val(x)===old))$(id).value=old}
-async function act(fn){try{let j=await fn();$('out').textContent=JSON.stringify(j,null,2);await refresh()}catch(e){alert(e.message)}}
-const post=(u,b)=>api(u,{method:'POST',body:JSON.stringify(b)});
-function createProduct(){act(()=>post('/api/products',{sku:$('sku').value,name:$('name').value,price_cents:+$('price').value}))}
-function receiveStock(){act(()=>post('/api/stock/receive',{product_id:$('productStock').value,quantity:+$('qty').value}))}
-function createCustomer(){act(()=>post('/api/customers',{name:$('customerName').value,email:$('customerEmail').value,consent_marketing:$('consent').checked}))}
-function createOrder(){act(()=>post('/api/orders',{customer_id:$('customerOrder').value,product_id:$('productOrder').value,quantity:+$('orderQty').value}))}
-function payOrder(){act(()=>post(`/api/orders/${$('orderSelect').value}/pay/mock`,{}))}
-function issueTax(){act(()=>post(`/api/orders/${$('orderSelect').value}/tax-document/mock`,{}))}
-function runAgent(){act(()=>post(`/api/agents/${$('agent').value}`,{goal:$('goal').value,context:{counts:{products:state.products.length,customers:state.customers.length,orders:state.orders.length}}}))}
-refresh();
-</script></body></html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Demo operativa de Commerce OS: catálogo, inventario, CRM, pedidos, pagos, tributación y agentes.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:* http://localhost:* http://10.0.2.2:* https:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Commerce OS Demo</title>
+  <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Saltar al espacio de trabajo</a>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Commerce OS, inicio">
+      <img src="./assets/logo.svg" alt="" width="38" height="38">
+      <span><strong>Commerce OS</strong><small>Demo operativa · v0.1.0</small></span>
+    </a>
+    <div class="topbar-actions">
+      <span class="connection" id="connection"><i></i><span>Iniciando</span></span>
+      <button class="button ghost compact" id="resetButton" type="button">Restablecer demo</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">UNA OPERACIÓN · TRES SUPERFICIES</p>
+        <h1 id="hero-title">Del catálogo a la venta,<br><span>sin perder el hilo.</span></h1>
+        <p class="hero-copy">Un recorrido demostrable por producto, inventario, cliente, pedido, pago, documento tributario y agente comercial. Funciona en navegador, Windows y Android.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#workspace">Recorrer la operación</a>
+          <a class="button ghost" href="#architecture">Ver arquitectura</a>
+        </div>
+      </div>
+      <div class="hero-panel" aria-label="Resumen del producto">
+        <div class="orbit"><span>CATÁLOGO</span><span>STOCK</span><span>CRM</span><span>VENTA</span><strong>CO</strong></div>
+        <div class="platform-strip"><span>🌐 Localhost</span><span>▣ Windows</span><span>◆ Android</span></div>
+      </div>
+    </section>
+
+    <section class="control-deck" aria-label="Configuración de la demo">
+      <div>
+        <label for="role">Perfil activo</label>
+        <select id="role">
+          <option value="company_admin">Administrador</option>
+          <option value="warehouse">Bodega</option>
+          <option value="sales">Ventas</option>
+          <option value="marketing">Marketing</option>
+          <option value="accountant">Contador</option>
+          <option value="ai_operator">Operador IA</option>
+          <option value="auditor">Auditor</option>
+        </select>
+      </div>
+      <div>
+        <span class="label">Motor de datos</span>
+        <div class="segmented" role="group" aria-label="Motor de datos">
+          <button type="button" data-mode="local" class="active">Demo local</button>
+          <button type="button" data-mode="api">API + PostgreSQL</button>
+        </div>
+      </div>
+      <div class="api-field" id="apiField" hidden>
+        <label for="apiUrl">URL de API</label>
+        <div class="inline"><input id="apiUrl" value="http://localhost:8080" inputmode="url"><button type="button" class="button ghost compact" id="connectButton">Conectar</button></div>
+      </div>
+      <p class="mode-help" id="modeHelp">Los datos quedan en este dispositivo. No se ejecutan pagos ni documentos reales.</p>
+    </section>
+
+    <section class="metrics" id="metrics" aria-label="Indicadores"></section>
+
+    <section class="workspace" id="workspace" aria-labelledby="workspace-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">RECORRIDO END-TO-END</p><h2 id="workspace-title">Mesa de operaciones</h2></div>
+        <p>Completa los seis pasos. Cada cambio genera un evento auditable.</p>
+      </div>
+
+      <div class="workflow">
+        <article class="task-card" data-step="01">
+          <header><span>01</span><div><p>CATÁLOGO</p><h3>Crear producto</h3></div></header>
+          <form id="productForm">
+            <label>SKU<input name="sku" value="DEMO-002" required></label>
+            <label>Nombre<input name="name" value="Pack Inicio" required></label>
+            <label>Precio neto CLP<input name="price_cents" type="number" min="1" value="15990" required></label>
+            <button class="button primary" type="submit">Guardar producto</button>
+          </form>
+        </article>
+
+        <article class="task-card" data-step="02">
+          <header><span>02</span><div><p>INVENTARIO</p><h3>Recibir stock</h3></div></header>
+          <form id="stockForm">
+            <label>Producto<select name="product_id" id="productStock" required></select></label>
+            <label>Unidades<input name="quantity" type="number" min="1" value="10" required></label>
+            <button class="button primary" type="submit">Ingresar a bodega</button>
+          </form>
+        </article>
+
+        <article class="task-card" data-step="03">
+          <header><span>03</span><div><p>CRM</p><h3>Registrar cliente</h3></div></header>
+          <form id="customerForm">
+            <label>Nombre<input name="name" value="María González" required></label>
+            <label>Email<input name="email" type="email" value="maria@example.com" required></label>
+            <label class="check"><input name="consent_marketing" type="checkbox"> Autoriza comunicaciones</label>
+            <button class="button primary" type="submit">Guardar cliente</button>
+          </form>
+        </article>
+
+        <article class="task-card" data-step="04">
+          <header><span>04</span><div><p>VENTAS</p><h3>Crear pedido</h3></div></header>
+          <form id="orderForm">
+            <label>Cliente<select name="customer_id" id="customerOrder" required></select></label>
+            <label>Producto<select name="product_id" id="productOrder" required></select></label>
+            <label>Unidades<input name="quantity" type="number" min="1" value="1" required></label>
+            <button class="button primary" type="submit">Reservar y crear</button>
+          </form>
+        </article>
+
+        <article class="task-card" data-step="05">
+          <header><span>05</span><div><p>COBRO Y TRIBUTACIÓN</p><h3>Cerrar venta</h3></div></header>
+          <label>Pedido<select id="orderSelect"></select></label>
+          <div class="split-actions"><button class="button primary" id="payButton" type="button">Aprobar pago mock</button><button class="button ghost" id="taxButton" type="button">Emitir boleta mock</button></div>
+          <p class="fine-print">Los adaptadores mock nunca mueven dinero ni se conectan al SII.</p>
+        </article>
+
+        <article class="task-card accent" data-step="06">
+          <header><span>06</span><div><p>OPERACIÓN ASISTIDA</p><h3>Consultar agente</h3></div></header>
+          <form id="agentForm">
+            <label>Especialidad<select name="agent"><option>brand</option><option>catalog</option><option>crm</option><option>partnerships</option><option>marketing</option></select></label>
+            <label>Objetivo<textarea name="goal" rows="3">Analiza el estado del demo y propone la siguiente acción comercial.</textarea></label>
+            <button class="button primary" type="submit">Generar propuesta</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section class="evidence-grid">
+      <article class="data-panel"><header><div><p class="eyebrow">ESTADO</p><h2>Operación actual</h2></div><button id="refreshButton" class="button ghost compact" type="button">Actualizar</button></header><div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody id="ordersTable"></tbody></table></div></article>
+      <article class="timeline-panel"><header><p class="eyebrow">TRAZABILIDAD</p><h2>Últimos eventos</h2></header><ol id="eventTimeline"></ol></article>
+    </section>
+
+    <section class="architecture" id="architecture">
+      <div class="section-heading"><div><p class="eyebrow">ARQUITECTURA CONSOLIDADA</p><h2>La interfaz no decide el backend</h2></div><p>Las superficies comparten la misma experiencia. El adaptador de datos cambia según el entorno.</p></div>
+      <div class="architecture-flow"><div><strong>Interfaz única</strong><span>HTML · CSS · JavaScript</span></div><b>→</b><div><strong>Contrato comercial</strong><span>catálogo · stock · CRM · pedidos</span></div><b>→</b><div class="branches"><span>Demo local persistente</span><span>API Fastify + PostgreSQL</span></div></div>
+    </section>
+  </main>
+
+  <footer><img src="./assets/logo.svg" alt="" width="30" height="30"><p><strong>Commerce Operating System</strong><br><span>Demo segura: toda acción externa requiere un adaptador y aprobación explícita.</span></p></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

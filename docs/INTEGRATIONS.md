@@ -1,4 +1,6 @@
-# Integration contracts
+# Contratos de integración
+
+Estos contratos describen puntos de extensión. En `0.1.0` solo los adaptadores `mock`, `mock-sii` y el fallback de agentes están activos.
 
 ## PaymentAdapter
 - createPayment(order)
@@ -26,9 +28,13 @@ Examples: Meta, Google Merchant, email/SMS provider.
 - syncInventory()
 - webhook(event)
 
-## Production rules
+## Reglas de producción
 - Secrets in a secret manager, never in database/plain env committed to Git.
 - Idempotency keys for payments/order-changing requests.
 - Signed webhook verification.
 - Retry with backoff + dead-letter queue.
 - Provider correlation IDs in logs.
+
+## Gate de activación
+
+Un proveedor real no se marca como conectado hasta verificar credenciales fuera del repositorio, idempotencia, firma de webhooks, conciliación, reintentos, cancelación/reembolso, observabilidad y un entorno sandbox del proveedor. La interfaz debe seguir indicando cuándo una operación es simulada.

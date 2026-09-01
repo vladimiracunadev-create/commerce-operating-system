@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Commerce OS Demo</string>
+    <string name="title_activity_main">Commerce OS Demo</string>
+    <string name="package_name">com.vladimiracuna.commerceos</string>
+    <string name="custom_url_scheme">com.vladimiracuna.commerceos</string>
+</resources>

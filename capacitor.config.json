@@ -1,0 +1,6 @@
+{
+  "appId": "com.vladimiracuna.commerceos",
+  "appName": "Commerce OS Demo",
+  "webDir": "apps/web",
+  "server": { "androidScheme": "https" }
+}
