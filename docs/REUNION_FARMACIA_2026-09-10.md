@@ -44,17 +44,27 @@ No es el sistema definitivo de la farmacia. No define la arquitectura final y no
 
 1. Ejecutar `corepack pnpm demo:check`.
 2. Abrir `http://127.0.0.1:4173`.
-3. Seleccionar **Demo local** y perfil **Administrador**.
+3. Mantener cerradas **Opciones de demostración** y **Capacidades técnicas secundarias**. El modo local y el perfil Administrador son los valores iniciales.
 4. Pulsar **Restablecer demo** y confirmar.
-5. Mostrar catálogo e inventario.
-6. Registrar **Cliente Demostración**.
-7. Crear un pedido y explicar la reserva de stock.
-8. Aprobar el pago mock, leyendo la advertencia **PAGO SIMULADO**.
-9. Mostrar la disminución de stock.
-10. Emitir la boleta mock solo si aporta a la conversación, leyendo la advertencia **DOCUMENTO TRIBUTARIO SIMULADO**.
-11. Cerrar en trazabilidad.
+5. En la pestaña **Catálogo**, explicar qué se vende y guardar el producto ficticio.
+6. Avanzar a **Inventario**, relacionar el producto e ingresar las unidades ficticias.
+7. Avanzar a **Cliente** y registrar **Cliente Demostración**.
+8. Avanzar a **Pedido**, crear una unidad y explicar la reserva de stock.
+9. Avanzar a **Pago simulado**, leer la advertencia **PAGO SIMULADO** y aprobar el mock.
+10. Emitir la boleta mock solo si aporta a la conversación, leyendo **DOCUMENTO TRIBUTARIO SIMULADO**.
+11. Avanzar a **Trazabilidad** y cerrar reconstruyendo la secuencia de eventos.
+
+La navegación principal admite clic y teclado: flechas izquierda/derecha cambian de pestaña; `Inicio` y `Fin` llevan al primer o último paso. Mostrar una sola pestaña por vez evita convertir la reunión en una enumeración de acciones.
 
 No mostrar agentes, API, arquitectura, roles ni otras superficies salvo pregunta directa.
+
+## Capturas de respaldo
+
+![Inicio de la demo conceptual guiada](assets/screenshots/demo-conceptual-overview.png)
+
+![Trazabilidad al completar el recorrido](assets/screenshots/demo-conceptual-flow.png)
+
+Estas capturas son generadas por `corepack pnpm test:web` después de ejecutar el recorrido en Chromium/Electron; no son maquetas dibujadas.
 
 ## Mensajes que deben quedar explícitos
 
@@ -77,7 +87,7 @@ Todos los datos de la demo son ficticios. No ingresar RUT, pacientes, recetas, c
 
 ## PLAN B
 
-Si el recorrido nuevo presenta un problema, recargar la página, elegir **Demo local** y pulsar **Restablecer demo**. Si el problema continúa, usar el flujo estable descrito en la sección genérica de [DEMO.md](DEMO.md) y apoyar la conversación con las capturas del README. La reunión debe continuar centrada en el levantamiento, no en reparar la aplicación.
+Si el recorrido presenta un problema, recargar la página y pulsar **Restablecer demo**. Si la página quedó en modo API, abrir **Opciones de demostración** y elegir **Demo local**. Si el problema continúa, apoyar la conversación con las capturas anteriores. La reunión debe continuar centrada en el levantamiento, no en reparar la aplicación.
 
 ## E. Frase de cierre
 
@@ -95,6 +105,7 @@ corepack pnpm demo:local
 - navegador abierto en `http://127.0.0.1:4173`;
 - modo local seleccionado;
 - datos restablecidos;
+- pestaña **Catálogo** seleccionada;
 - zoom y resolución legibles;
 - capturas disponibles sin conexión;
 - notificaciones del sistema silenciadas.

@@ -5,17 +5,16 @@
 Esta sección es una variante de presentación; no sustituye el guion genérico ni representa el sistema definitivo del cliente.
 
 1. Pulsa **Restablecer demo** y confirma.
-2. Muestra el catálogo ficticio.
-3. Muestra el stock disponible.
-4. Registra **Cliente Demostración**.
-5. Crea un pedido por una unidad.
-6. Muestra el estado **Pago pendiente**.
-7. Aprueba el pago mock y señala **PAGO SIMULADO — No mueve dinero ni utiliza Webpay real**.
-8. Muestra la disminución de stock.
-9. Si aporta a la conversación, emite el documento mock y señala **DOCUMENTO TRIBUTARIO SIMULADO — No emite documentos ante el SII**.
-10. Cierra mostrando la trazabilidad.
+2. Recorre las pestañas de izquierda a derecha; solo una tarea principal permanece visible.
+3. En **Catálogo**, guarda el producto ficticio.
+4. En **Inventario**, recibe sus unidades.
+5. En **Cliente**, registra **Cliente Demostración**.
+6. En **Pedido**, crea una unidad y explica la reserva.
+7. En **Pago simulado**, aprueba el mock y señala **PAGO SIMULADO — No mueve dinero ni utiliza Webpay real**.
+8. Si aporta a la conversación, emite el documento mock y señala **DOCUMENTO TRIBUTARIO SIMULADO — No emite documentos ante el SII**.
+9. En **Trazabilidad**, muestra el pedido pagado y la secuencia de eventos.
 
-No mostrar más salvo pregunta directa. Los agentes son una funcionalidad secundaria y siempre requieren aprobación humana.
+Cada pestaña contiene texto para explicar al cliente qué demuestra y qué no significa o queda pendiente de Fase 1. No mostrar más salvo pregunta directa. Las opciones técnicas y los agentes están colapsados; los agentes siempre requieren aprobación humana.
 
 Consulta [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md) para las frases de apertura/cierre, límites y Plan B.
 

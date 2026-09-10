@@ -11,7 +11,7 @@
 [![CI](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/ci.yml)
 [![Release](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/release.yml/badge.svg)](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/release.yml)
 
-![Versión](https://img.shields.io/badge/versión-0.2.0-55e6a5?style=for-the-badge)
+![Versión](https://img.shields.io/badge/versión-0.3.0-55e6a5?style=for-the-badge)
 ![Superficies](https://img.shields.io/badge/superficies-Web_·_Windows_·_Android-36a3ff?style=for-the-badge)
 ![Pruebas](https://img.shields.io/badge/pruebas-9_verdes-2ea44f?style=for-the-badge)
 ![Modo](https://img.shields.io/badge/modo-demo_segura-f8b84e?style=for-the-badge)
@@ -29,7 +29,7 @@
 
 ## Qué funciona hoy
 
-La versión `0.2.0` consolida un recorrido conceptual reproducible:
+La versión `0.3.0` presenta el recorrido conceptual en seis pestañas autoexplicativas, con una sola tarea visible por vez:
 
 1. crea un producto con SKU y precio;
 2. recibe unidades en bodega;
@@ -38,15 +38,15 @@ La versión `0.2.0` consolida un recorrido conceptual reproducible:
 5. aprueba un pago mock y descuenta inventario;
 6. explica el resultado mediante una trazabilidad visible.
 
-La boleta mock y los agentes permanecen disponibles como funciones secundarias, claramente simuladas y sujetas a sus controles. Cada cambio aplica permisos por rol y registra un evento. La demo local persiste en el dispositivo; el modo servidor usa PostgreSQL como fuente de verdad.
+Cada pestaña explica qué demuestra el concepto y qué continúa pendiente de la Fase 1. La boleta mock y los agentes permanecen disponibles como funciones secundarias, claramente simuladas y sujetas a sus controles. Cada cambio aplica permisos por rol y registra un evento. La demo local persiste en el dispositivo; el modo servidor usa PostgreSQL como fuente de verdad.
 
 ## Demo conceptual verificada
 
-![Inicio de la demo conceptual](docs/assets/screenshots/demo-conceptual-overview.png)
+![Inicio de la demo conceptual guiada](docs/assets/screenshots/demo-conceptual-overview.png)
 
 ![Flujo completado y trazabilidad](docs/assets/screenshots/demo-conceptual-flow.png)
 
-Las capturas son generadas por `pnpm test:web` después de cargar la aplicación en Chromium/Electron. El smoke test recorre catálogo, inventario, cliente, pedido, pago mock, documento mock, trazabilidad y rechazo por rol.
+Las capturas son generadas por `pnpm test:web` después de cargar la aplicación en Chromium/Electron. El smoke test abre las seis pestañas, comprueba que solo una esté visible y recorre catálogo, inventario, cliente, pedido, pago mock, documento mock, trazabilidad y rechazo por rol.
 
 ## Ejecutar en 60 segundos
 
@@ -80,7 +80,7 @@ Para generar el ejecutable portable:
 corepack pnpm desktop:pack
 ```
 
-El artefacto queda en `dist/installers/CommerceOS-Demo-Windows-0.2.0.exe`.
+El artefacto queda en `dist/installers/CommerceOS-Demo-Windows-0.3.0.exe`.
 
 ### Android
 
