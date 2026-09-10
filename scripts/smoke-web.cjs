@@ -48,11 +48,16 @@ async function main() {
         field.dispatchEvent(new Event('change', { bubbles: true }));
       };
       const submit = (selector) => document.querySelector(selector).dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+      const openTab = async (name) => {
+        document.querySelector('[data-tab="' + name + '"]').click();
+        await until(() => document.querySelector('[data-tab="' + name + '"]').getAttribute('aria-selected') === 'true', 'tab ' + name);
+      };
 
       window.confirm = () => true;
       document.querySelector('#resetButton').click();
       await until(() => document.querySelector('#metrics').textContent.includes('12'), 'reset');
 
+      await openTab('catalog');
       set('#productForm [name="sku"]', 'DEMO-002');
       set('#productForm [name="name"]', 'Producto Demo B');
       set('#productForm [name="price_cents"]', '15990');
@@ -60,23 +65,27 @@ async function main() {
       await until(() => [...document.querySelectorAll('#productStock option')].some((option) => option.textContent.includes('DEMO-002')), 'product');
 
       const productId = [...document.querySelectorAll('#productStock option')].find((option) => option.textContent.includes('DEMO-002')).value;
+      await openTab('inventory');
       set('#productStock', productId);
       set('#stockForm [name="quantity"]', '10');
       submit('#stockForm');
       await wait();
 
+      await openTab('customer');
       set('#customerForm [name="name"]', 'Cliente Demostración');
       set('#customerForm [name="email"]', 'cliente.demo@example.com');
       submit('#customerForm');
       await until(() => [...document.querySelectorAll('#customerOrder option')].some((option) => option.textContent.includes('Cliente Demostración')), 'customer');
 
       const customerId = [...document.querySelectorAll('#customerOrder option')].find((option) => option.textContent.includes('Cliente Demostración')).value;
+      await openTab('order');
       set('#customerOrder', customerId);
       set('#productOrder', productId);
       set('#orderForm [name="quantity"]', '1');
       submit('#orderForm');
       await until(() => document.querySelector('#ordersTable').textContent.includes('Pago pendiente'), 'order');
 
+      await openTab('payment');
       document.querySelector('#payButton').click();
       await until(() => document.querySelector('#ordersTable').textContent.includes('Pagado'), 'payment');
 
@@ -89,12 +98,17 @@ async function main() {
       const roleRejected = document.querySelector('#toast').textContent.includes('no puede ejecutar customers');
       set('#role', 'company_admin');
 
-      document.querySelector('#traceability').scrollIntoView({ block: 'center' });
+      await openTab('traceability');
+      document.querySelector('#guidedDemo').scrollIntoView({ block: 'start' });
       await wait(250);
 
       const events = document.querySelector('#eventTimeline').textContent;
+      const visiblePanels = [...document.querySelectorAll('[data-demo-panel]')].filter((panel) => !panel.hidden);
       return {
         title: document.title,
+        tabs: document.querySelectorAll('[role="tab"]').length === 6,
+        onePanelVisible: visiblePanels.length === 1 && visiblePanels[0].dataset.demoPanel === 'traceability',
+        explanatoryCopy: document.body.textContent.includes('Qué demuestra') && document.body.textContent.includes('Pendiente de Fase 1'),
         orderPaid: document.querySelector('#ordersTable').textContent.includes('Pagado'),
         taxDocument: document.querySelector('#metrics').textContent.includes('Boletas demo1'),
         roleRejected,

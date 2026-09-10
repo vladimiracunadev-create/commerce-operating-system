@@ -4,11 +4,16 @@ import { readFile } from 'node:fs/promises';
 
 test('presenta el producto como demo conceptual con un recorrido de seis pasos', async () => {
   const html = await readFile('apps/web/index.html', 'utf8');
-  assert.match(html, /Commerce Operating System<br><span>Demo conceptual<\/span>/);
+  assert.match(html, /Una conversación guiada/);
   for (const step of ['Catálogo', 'Inventario', 'Cliente', 'Pedido', 'Pago simulado', 'Trazabilidad']) {
     assert.match(html, new RegExp(step));
   }
-  assert.match(html, /Funcionalidad secundaria: agentes con aprobación humana/);
+  assert.equal((html.match(/role="tab"/g) ?? []).length, 6);
+  assert.equal((html.match(/role="tabpanel"/g) ?? []).length, 6);
+  assert.equal((html.match(/role="tabpanel"[^>]*hidden/g) ?? []).length, 5);
+  assert.match(html, /Qué demuestra/);
+  assert.match(html, /Pendiente de Fase 1/);
+  assert.match(html, /Capacidades técnicas secundarias — mostrar solo si preguntan/);
 });
 
 test('muestra advertencias inequívocas para pago y documento tributario', async () => {
