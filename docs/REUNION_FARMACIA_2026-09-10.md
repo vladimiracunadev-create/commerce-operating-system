@@ -1,6 +1,7 @@
 # Reunión farmacia — demo conceptual
 
-Fecha: 10 de septiembre de 2026, 12:00  
+Fecha: 10 de septiembre de 2026, 12:00
+
 Duración recomendada de la demo: 3 a 5 minutos.
 
 ## A. Qué es la demo
