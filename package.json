@@ -15,7 +15,7 @@
     "dev:api": "pnpm --dir apps/api dev",
     "build:api": "pnpm --dir apps/api build",
     "start:api": "pnpm --dir apps/api start",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test tests/*.test.mjs && pnpm --dir apps/api test",
     "test:web": "electron scripts/smoke-web.cjs",
     "check:project": "node scripts/check-project.mjs",
     "check": "pnpm prepare:web && pnpm test && pnpm build:api && pnpm check:project",

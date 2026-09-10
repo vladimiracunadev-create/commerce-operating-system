@@ -13,7 +13,7 @@
 
 ![Versión](https://img.shields.io/badge/versión-0.3.0-55e6a5?style=for-the-badge)
 ![Superficies](https://img.shields.io/badge/superficies-Web_·_Windows_·_Android-36a3ff?style=for-the-badge)
-![Pruebas](https://img.shields.io/badge/pruebas-11_verdes-2ea44f?style=for-the-badge)
+![Pruebas](https://img.shields.io/badge/pruebas-17_verdes-2ea44f?style=for-the-badge)
 ![Modo](https://img.shields.io/badge/modo-demo_segura-f8b84e?style=for-the-badge)
 
 [Inicio rápido](docs/QUICKSTART.md) · [Guion de demo](docs/DEMO.md) · [Apoyo para reunión](docs/REUNION_FARMACIA_2026-09-10.md) · [Estado verificable](docs/STATUS.md) · [Plataformas](docs/PLATFORMS.md) · [Instancias tecnológicas](docs/TECHNOLOGY-INSTANCES.md) · [Arquitectura](docs/ARCHITECTURE.md) · [Seguridad](SECURITY.md)
@@ -175,7 +175,7 @@ docs/              # producto, demo, plataformas y arquitectura
 | Comando | Resultado |
 |---|---|
 | `pnpm demo:local` | demo en `127.0.0.1:4173` |
-| `pnpm test` | 11 pruebas de núcleo, presentación, documentación y Pages |
+| `pnpm test` | 17 pruebas de núcleo local, dominio API, presentación, documentación y Pages |
 | `pnpm build:api` | compilación estricta TypeScript |
 | `pnpm check` | núcleo, API, documentación y sincronía del bundle |
 | `pnpm desktop` | aplicación Windows en modo desarrollo |

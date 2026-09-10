@@ -17,7 +17,7 @@ Punto de partida: `v0.3.0`
 
 ### Hito 1 — Auditoría, línea base y mapa ERP
 
-Estado: **completado en documentación; pendiente de aprobación de cierre**.
+Estado: **completado**.
 
 Entregables:
 
@@ -41,6 +41,8 @@ Criterios de salida:
 
 Objetivo: extraer reglas desde `server.ts` sin cambiar Fastify ni romper la demo.
 
+Estado: **completado el 10 de septiembre de 2026**.
+
 Alcance propuesto:
 
 - resolver la vulnerabilidad alta aplicable de `@fastify/static` con verificación de compatibilidad;
@@ -52,11 +54,13 @@ Alcance propuesto:
 
 Criterios de salida:
 
-- todas las transiciones permitidas/rechazadas están enumeradas y probadas;
-- no hay SQL nuevo en controladores HTTP;
-- suite anterior y `DEMO READY` permanecen verdes;
-- `pnpm audit` no reporta vulnerabilidades altas aplicables;
-- documentación de arquitectura y changelog actualizados.
+- [x] todas las transiciones permitidas/rechazadas están enumeradas y probadas;
+- [x] rutas HTTP, aplicación, dominio e infraestructura están separadas y el SQL queda en el repositorio PostgreSQL;
+- [x] suite ampliada a 17/17 pruebas, build TypeScript y `DEMO READY`;
+- [x] `@fastify/static` actualizado a `10.1.2`; `pnpm audit --audit-level high` no reporta vulnerabilidades altas;
+- [x] errores HTTP usan `application/problem+json` sin filtrar fallos internos;
+- [x] eventos v1 incluyen actor, tenant, correlación y causación;
+- [x] arquitectura, modelo de dominio, mapa de capacidades y changelog actualizados.
 
 ### Hito 3 — Idempotencia, reservas y consistencia transaccional
 
@@ -172,4 +176,4 @@ flowchart LR
 
 ## Próxima decisión
 
-No iniciar el Hito 2 sin aprobación explícita. Su primer incremento recomendado combina la actualización segura de `@fastify/static` con la extracción de errores de dominio y la máquina de estados, manteniendo el flujo externo sin cambios.
+El Hito 2 está cerrado. El siguiente gate es completar el Hito 3 con idempotencia, liberación única y pruebas PostgreSQL concurrentes antes de iniciar migraciones y multiempresa.

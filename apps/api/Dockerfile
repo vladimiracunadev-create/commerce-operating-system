@@ -18,4 +18,4 @@ COPY apps/web ./apps/web
 COPY packages/demo-core/index.js ./apps/web/demo-core.js
 WORKDIR /workspace/apps/api
 ENV PORT=8080
-CMD ["node","dist/server.js"]
+CMD ["node","dist/main.js"]

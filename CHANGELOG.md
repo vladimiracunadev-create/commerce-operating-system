@@ -6,6 +6,11 @@ Todos los cambios relevantes de Commerce Operating System se documentan aquí.
 
 ### Cambiado
 
+- La API Fastify pasa de un archivo monolítico a capas de transporte, aplicación, dominio, puertos e infraestructura PostgreSQL.
+- Los estados de pedido se centralizan en una máquina explícita y los errores HTTP adoptan Problem Details.
+- Los eventos de servidor quedan versionados y conservan tenant, actor, correlación y causación.
+- `@fastify/static` se actualiza a `10.1.2`, eliminando la vulnerabilidad alta aplicable.
+- La suite determinista crece de 11 a 17 pruebas.
 - La guía de reunión de la farmacia se declara como referencia canónica para el recorrido local de 3 a 5 minutos.
 - Docker se documenta como validación técnica previa y respaldo opcional, no como requisito de la presentación comercial.
 - Se añade una landing pública autocontenida con demo web, capturas, límites, guía canónica y descargas de `v0.3.0` mediante GitHub Pages.

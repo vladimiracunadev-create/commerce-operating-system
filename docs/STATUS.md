@@ -19,7 +19,7 @@ Fecha de verificación documental y funcional: 2026-09-10.
 | Pedidos | ✅ | cálculo neto + IVA demo 19 %, reserva transaccional en API |
 | Pago | 🟡 | aprobación mock; no mueve dinero |
 | Documento tributario | 🟡 | boleta mock única por pedido; no contacta al SII |
-| Eventos | ✅ | registro cronológico de cada paso |
+| Eventos | ✅ | registro cronológico; contrato v1 con tenant, actor, correlación y causación en servidor |
 | Agentes | 🟡 | cinco perfiles, fallback seguro, LLM opcional |
 | RBAC | 🟡 | roles reales; identidad demostrada por encabezado o selector |
 | Restablecimiento | ✅ | estado inicial local y limpieza transaccional del servidor |
@@ -33,7 +33,7 @@ Fecha de verificación documental y funcional: 2026-09-10.
 | PWA | ✅ | manifest, service worker y modo standalone |
 | Windows | ✅ | Electron, sandbox y workflow que produce EXE portable |
 | Android | ✅ | Capacitor y workflow que produce APK debug |
-| Backend Docker | ✅ | `node scripts/smoke-api.mjs`: API, PostgreSQL ready, pedido pagado, pago/documento mock y agente safe-fallback |
+| Backend Docker | ✅ | API modular Fastify, PostgreSQL, Problem Details y recorrido comercial transaccional |
 | GitHub Pages | ✅ | landing autocontenida, capturas verificadas, demo local ejecutable y workflow dedicado |
 
 Para la reunión, la fuente canónica es [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md). El modo local es principal; Docker demuestra la instancia de referencia y funciona como validación o respaldo opcional.

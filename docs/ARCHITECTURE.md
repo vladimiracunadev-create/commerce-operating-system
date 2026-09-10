@@ -39,6 +39,18 @@ El cliente ejecuta las invariantes en el dispositivo y persiste un estado de dem
 
 Fastify aplica el mismo recorrido sobre PostgreSQL. Los pedidos reservan stock y los pagos descuentan unidades dentro de transacciones. Los eventos quedan en una tabla outbox; su procesamiento asíncrono pertenece a una etapa posterior.
 
+La API se organiza como monolito modular:
+
+```text
+http/routes.ts                    # transporte y códigos HTTP
+application/commerce-service.ts  # casos de uso, autorización y validación
+domain/                           # estados, errores y eventos versionados
+application/ports.ts             # puerto de persistencia
+infrastructure/                  # adaptador PostgreSQL y transacciones
+```
+
+Las rutas no contienen SQL. Los errores de dominio se traducen centralmente a Problem Details y cada solicitud conserva un identificador de correlación.
+
 ## Módulos de dominio
 
 1. Identidad y roles.
@@ -67,6 +79,8 @@ La demo `0.3.0` implementa un corte vertical de los módulos 1, 2, 4, 5, 6, 7, 8
 - un documento tributario mock exige un pedido pagado y es único;
 - cada transición emite un evento;
 - un agente propone, pero no ejecuta escrituras externas.
+- una transición de pedido solo ocurre si la máquina de estados explícita la permite;
+- cada evento de servidor registra versión, tenant, actor, correlación y causación.
 
 ## Fuente de verdad
 
