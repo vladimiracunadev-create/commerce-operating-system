@@ -27,9 +27,9 @@ export function seedState() {
   return {
     version: DEMO_VERSION,
     company: { id: 'demo-company', name: 'Empresa Demo SpA', currency: 'CLP' },
-    products: [{ id: 'product-demo', sku: 'DEMO-001', name: 'Producto Demo', description: 'Producto inicial para recorrer el flujo completo.', price_cents: 10000, active: true, created_at: createdAt }],
-    stock: [{ product_id: 'product-demo', sku: 'DEMO-001', name: 'Producto Demo', quantity: 12, reserved: 0 }],
-    customers: [{ id: 'customer-demo', name: 'Cliente Demo', email: 'cliente@example.com', consent_marketing: true, created_at: createdAt }],
+    products: [{ id: 'product-demo', sku: 'DEMO-001', name: 'Producto Demo A', description: 'Producto ficticio para recorrer el flujo completo.', price_cents: 10000, active: true, created_at: createdAt }],
+    stock: [{ product_id: 'product-demo', sku: 'DEMO-001', name: 'Producto Demo A', quantity: 12, reserved: 0 }],
+    customers: [{ id: 'customer-demo', name: 'Cliente Demostración', email: 'cliente.demo@example.com', consent_marketing: true, created_at: createdAt }],
     orders: [], payments: [], tax_documents: [], agent_runs: [],
     events: [{ event_type: 'demo.workspace.ready', aggregate_type: 'company', aggregate_id: 'demo-company', payload: { version: DEMO_VERSION }, created_at: createdAt }],
   };

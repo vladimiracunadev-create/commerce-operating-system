@@ -4,19 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07111f">
-  <meta name="description" content="Demo operativa de Commerce OS: catálogo, inventario, CRM, pedidos, pagos, tributación y agentes.">
+  <meta name="description" content="Demo conceptual de Commerce OS: catálogo, inventario, clientes, pedidos y trazabilidad, sin integraciones reales.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:* http://localhost:* http://10.0.2.2:* https:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <title>Commerce OS Demo</title>
+  <title>Commerce Operating System — Demo conceptual</title>
   <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./presentation.css">
 </head>
 <body>
   <a class="skip-link" href="#workspace">Saltar al espacio de trabajo</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Commerce OS, inicio">
       <img src="./assets/logo.svg" alt="" width="38" height="38">
-      <span><strong>Commerce OS</strong><small>Demo operativa · v0.1.0</small></span>
+      <span><strong>Commerce OS</strong><small>Demo conceptual · v0.2.0</small></span>
     </a>
     <div class="topbar-actions">
       <span class="connection" id="connection"><i></i><span>Iniciando</span></span>
@@ -27,9 +28,9 @@
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
       <div>
-        <p class="eyebrow">UNA OPERACIÓN · TRES SUPERFICIES</p>
-        <h1 id="hero-title">Del catálogo a la venta,<br><span>sin perder el hilo.</span></h1>
-        <p class="hero-copy">Un recorrido demostrable por producto, inventario, cliente, pedido, pago, documento tributario y agente comercial. Funciona en navegador, Windows y Android.</p>
+        <p class="eyebrow">DEMO CONCEPTUAL · EJECUCIÓN LOCAL</p>
+        <h1 id="hero-title">Commerce Operating System<br><span>Demo conceptual</span></h1>
+        <p class="hero-copy">Referencia funcional para conversar sobre catálogo, inventario, clientes, pedidos y trazabilidad. No corresponde al sistema definitivo de la farmacia.</p>
         <div class="hero-actions">
           <a class="button primary" href="#workspace">Recorrer la operación</a>
           <a class="button ghost" href="#architecture">Ver arquitectura</a>
@@ -40,6 +41,15 @@
         <div class="platform-strip"><span>🌐 Localhost</span><span>▣ Windows</span><span>◆ Android</span></div>
       </div>
     </section>
+
+    <section class="concept-notice" aria-label="Alcance de la demostración">
+      <strong>Referencia para conversación, no solución aprobada.</strong>
+      <span>Webpay, SII, ERP, preparados magistrales y operación multisucursal requieren levantamiento e integración durante la Fase 1.</span>
+    </section>
+
+    <nav class="demo-route" aria-label="Recorrido recomendado de la demo">
+      <span>01 Catálogo</span><b>→</b><span>02 Inventario</span><b>→</b><span>03 Cliente</span><b>→</b><span>04 Pedido</span><b>→</b><span>05 Pago simulado</span><b>→</b><span>06 Trazabilidad</span>
+    </nav>
 
     <section class="control-deck" aria-label="Configuración de la demo">
       <div>
@@ -99,8 +109,8 @@
         <article class="task-card" data-step="03">
           <header><span>03</span><div><p>CRM</p><h3>Registrar cliente</h3></div></header>
           <form id="customerForm">
-            <label>Nombre<input name="name" value="María González" required></label>
-            <label>Email<input name="email" type="email" value="maria@example.com" required></label>
+            <label>Nombre<input name="name" value="Cliente Demostración" required></label>
+            <label>Email<input name="email" type="email" value="cliente.demo@example.com" required></label>
             <label class="check"><input name="consent_marketing" type="checkbox"> Autoriza comunicaciones</label>
             <button class="button primary" type="submit">Guardar cliente</button>
           </form>
@@ -117,27 +127,36 @@
         </article>
 
         <article class="task-card" data-step="05">
-          <header><span>05</span><div><p>COBRO Y TRIBUTACIÓN</p><h3>Cerrar venta</h3></div></header>
+          <header><span>05</span><div><p>PAGO SIMULADO</p><h3>Cerrar venta de demostración</h3></div></header>
           <label>Pedido<select id="orderSelect"></select></label>
           <div class="split-actions"><button class="button primary" id="payButton" type="button">Aprobar pago mock</button><button class="button ghost" id="taxButton" type="button">Emitir boleta mock</button></div>
-          <p class="fine-print">Los adaptadores mock nunca mueven dinero ni se conectan al SII.</p>
+          <div class="simulation-warning"><strong>PAGO SIMULADO</strong><span>No mueve dinero ni utiliza Webpay real.</span></div>
+          <div class="simulation-warning tax"><strong>DOCUMENTO TRIBUTARIO SIMULADO</strong><span>No emite documentos ante el SII.</span></div>
         </article>
 
-        <article class="task-card accent" data-step="06">
-          <header><span>06</span><div><p>OPERACIÓN ASISTIDA</p><h3>Consultar agente</h3></div></header>
-          <form id="agentForm">
-            <label>Especialidad<select name="agent"><option>brand</option><option>catalog</option><option>crm</option><option>partnerships</option><option>marketing</option></select></label>
-            <label>Objetivo<textarea name="goal" rows="3">Analiza el estado del demo y propone la siguiente acción comercial.</textarea></label>
-            <button class="button primary" type="submit">Generar propuesta</button>
-          </form>
+        <article class="task-card trace-card" data-step="06">
+          <header><span>06</span><div><p>TRAZABILIDAD</p><h3>Explicar cada cambio</h3></div></header>
+          <p>Producto creado, stock ingresado, cliente registrado, pedido reservado y pago simulado quedan visibles como eventos auditables.</p>
+          <a class="button primary" href="#traceability">Ver trazabilidad</a>
+          <p class="fine-print">Las acciones rechazadas por rol también quedan demostrables sin alterar el flujo principal.</p>
         </article>
       </div>
     </section>
 
     <section class="evidence-grid">
       <article class="data-panel"><header><div><p class="eyebrow">ESTADO</p><h2>Operación actual</h2></div><button id="refreshButton" class="button ghost compact" type="button">Actualizar</button></header><div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody id="ordersTable"></tbody></table></div></article>
-      <article class="timeline-panel"><header><p class="eyebrow">TRAZABILIDAD</p><h2>Últimos eventos</h2></header><ol id="eventTimeline"></ol></article>
+      <article class="timeline-panel" id="traceability"><header><p class="eyebrow">TRAZABILIDAD · EVIDENCIA PRINCIPAL</p><h2>Últimos eventos</h2></header><ol id="eventTimeline"></ol></article>
     </section>
+
+    <details class="secondary-panel">
+      <summary>Funcionalidad secundaria: agentes con aprobación humana</summary>
+      <p>Los agentes proponen; no ejecutan escrituras externas. Úsalos únicamente si surge una pregunta directa.</p>
+      <form id="agentForm">
+        <label>Especialidad<select name="agent"><option>brand</option><option>catalog</option><option>crm</option><option>partnerships</option><option>marketing</option></select></label>
+        <label>Objetivo<textarea name="goal" rows="3">Analiza el estado del demo y propone la siguiente acción comercial.</textarea></label>
+        <button class="button primary" type="submit">Generar propuesta</button>
+      </form>
+    </details>
 
     <section class="architecture" id="architecture">
       <div class="section-heading"><div><p class="eyebrow">ARQUITECTURA CONSOLIDADA</p><h2>La interfaz no decide el backend</h2></div><p>Las superficies comparten la misma experiencia. El adaptador de datos cambia según el entorno.</p></div>

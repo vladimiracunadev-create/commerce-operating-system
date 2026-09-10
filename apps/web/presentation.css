@@ -1,0 +1,136 @@
+.concept-notice {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 18px;
+  padding: 16px 20px;
+  border: 1px solid #f8b84e66;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f8b84e18, #55e6a50d);
+}
+
+.concept-notice strong {
+  color: #ffe0a3;
+}
+
+.concept-notice span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.demo-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #0d1a2bcc;
+  white-space: nowrap;
+}
+
+.demo-route span {
+  color: #dbeaff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+.demo-route b {
+  color: var(--green);
+}
+
+.simulation-warning {
+  display: grid;
+  gap: 3px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #55e6a566;
+  border-radius: 10px;
+  background: #55e6a50d;
+}
+
+.simulation-warning.tax {
+  border-color: #36a3ff66;
+  background: #36a3ff0d;
+}
+
+.simulation-warning strong {
+  color: var(--green);
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+
+.simulation-warning.tax strong {
+  color: #8dc8ff;
+}
+
+.simulation-warning span,
+.trace-card p,
+.secondary-panel > p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.trace-card {
+  border-color: #55e6a555;
+  background: linear-gradient(145deg, #10263a, #0c1a2b);
+}
+
+.trace-card .button {
+  width: fit-content;
+}
+
+.secondary-panel {
+  margin: -40px 0 64px;
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #0d1a2b;
+}
+
+.secondary-panel summary {
+  cursor: pointer;
+  color: #c8d8e9;
+  font-weight: 700;
+}
+
+.secondary-panel form {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 14px;
+  align-items: end;
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .demo-route {
+    justify-content: flex-start;
+  }
+
+  .secondary-panel form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar #resetButton {
+    display: inline-flex;
+  }
+
+  .concept-notice {
+    margin-top: 8px;
+  }
+
+  .demo-route {
+    margin-bottom: 18px;
+  }
+
+  .secondary-panel {
+    margin-top: -30px;
+  }
+}
