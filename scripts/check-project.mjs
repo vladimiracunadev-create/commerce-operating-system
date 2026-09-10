@@ -4,8 +4,10 @@ import process from 'node:process';
 
 const required = [
   'README.md', 'ABOUT.md', 'SECURITY.md', 'CHANGELOG.md', 'docs/QUICKSTART.md', 'docs/PLATFORMS.md', 'docs/STATUS.md',
-  'apps/web/index.html', 'apps/web/app.js', 'apps/web/styles.css', 'apps/web/manifest.webmanifest', 'apps/desktop/main.cjs',
+  'apps/web/index.html', 'apps/web/app.js', 'apps/web/styles.css', 'apps/web/presentation.css', 'apps/web/manifest.webmanifest', 'apps/desktop/main.cjs',
   'packages/demo-core/index.js', 'capacitor.config.json', '.github/workflows/ci.yml', '.github/workflows/release.yml',
+  'docs/REUNION_FARMACIA_2026-09-10.md', 'scripts/demo-check.mjs',
+  'scripts/smoke-web.cjs',
 ];
 for (const file of required) await access(path.resolve(file));
 
