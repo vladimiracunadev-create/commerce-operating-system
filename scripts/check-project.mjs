@@ -8,6 +8,7 @@ const required = [
   'packages/demo-core/index.js', 'capacitor.config.json', '.github/workflows/ci.yml', '.github/workflows/release.yml',
   'docs/REUNION_FARMACIA_2026-09-10.md', 'scripts/demo-check.mjs',
   'scripts/smoke-web.cjs',
+  'landing/index.html', 'landing/styles.css', '.github/workflows/pages.yml',
 ];
 for (const file of required) await access(path.resolve(file));
 
