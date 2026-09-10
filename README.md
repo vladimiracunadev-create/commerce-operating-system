@@ -11,16 +11,16 @@
 [![CI](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/ci.yml)
 [![Release](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/release.yml/badge.svg)](https://github.com/vladimiracunadev-create/commerce-operating-system/actions/workflows/release.yml)
 
-![Versión](https://img.shields.io/badge/versión-0.1.0-55e6a5?style=for-the-badge)
+![Versión](https://img.shields.io/badge/versión-0.2.0-55e6a5?style=for-the-badge)
 ![Superficies](https://img.shields.io/badge/superficies-Web_·_Windows_·_Android-36a3ff?style=for-the-badge)
-![Pruebas](https://img.shields.io/badge/pruebas-6_verdes-2ea44f?style=for-the-badge)
+![Pruebas](https://img.shields.io/badge/pruebas-9_verdes-2ea44f?style=for-the-badge)
 ![Modo](https://img.shields.io/badge/modo-demo_segura-f8b84e?style=for-the-badge)
 
-[Inicio rápido](docs/QUICKSTART.md) · [Guion de demo](docs/DEMO.md) · [Estado verificable](docs/STATUS.md) · [Plataformas](docs/PLATFORMS.md) · [Instancias tecnológicas](docs/TECHNOLOGY-INSTANCES.md) · [Arquitectura](docs/ARCHITECTURE.md) · [Seguridad](SECURITY.md)
+[Inicio rápido](docs/QUICKSTART.md) · [Guion de demo](docs/DEMO.md) · [Apoyo para reunión](docs/REUNION_FARMACIA_2026-09-10.md) · [Estado verificable](docs/STATUS.md) · [Plataformas](docs/PLATFORMS.md) · [Instancias tecnológicas](docs/TECHNOLOGY-INSTANCES.md) · [Arquitectura](docs/ARCHITECTURE.md) · [Seguridad](SECURITY.md)
 
 | Flujo funcional | Motores de datos | Superficies | Acciones externas |
 |:---:|:---:|:---:|:---:|
-| **7 etapas** | **2** | **3** | **0 sin aprobación** |
+| **6 pasos principales** | **2** | **3** | **0 sin aprobación** |
 
 </div>
 
@@ -29,17 +29,24 @@
 
 ## Qué funciona hoy
 
-La versión `0.1.0` consolida un único recorrido reproducible:
+La versión `0.2.0` consolida un recorrido conceptual reproducible:
 
 1. crea un producto con SKU y precio;
 2. recibe unidades en bodega;
 3. registra un cliente y su consentimiento;
 4. crea un pedido y reserva stock;
 5. aprueba un pago mock y descuenta inventario;
-6. emite una boleta mock una sola vez;
-7. genera una propuesta comercial sin ejecutar acciones externas.
+6. explica el resultado mediante una trazabilidad visible.
 
-Cada paso aplica permisos por rol y registra un evento. La demo local persiste en el dispositivo; el modo servidor usa PostgreSQL como fuente de verdad.
+La boleta mock y los agentes permanecen disponibles como funciones secundarias, claramente simuladas y sujetas a sus controles. Cada cambio aplica permisos por rol y registra un evento. La demo local persiste en el dispositivo; el modo servidor usa PostgreSQL como fuente de verdad.
+
+## Demo conceptual verificada
+
+![Inicio de la demo conceptual](docs/assets/screenshots/demo-conceptual-overview.png)
+
+![Flujo completado y trazabilidad](docs/assets/screenshots/demo-conceptual-flow.png)
+
+Las capturas son generadas por `pnpm test:web` después de cargar la aplicación en Chromium/Electron. El smoke test recorre catálogo, inventario, cliente, pedido, pago mock, documento mock, trazabilidad y rechazo por rol.
 
 ## Ejecutar en 60 segundos
 
@@ -73,7 +80,7 @@ Para generar el ejecutable portable:
 corepack pnpm desktop:pack
 ```
 
-El artefacto queda en `dist/installers/CommerceOS-Demo-Windows-0.1.0.exe`.
+El artefacto queda en `dist/installers/CommerceOS-Demo-Windows-0.2.0.exe`.
 
 ### Android
 

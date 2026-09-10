@@ -1,4 +1,25 @@
-# Guion de demo operativa
+# Guion de demo
+
+## DEMO PARA REUNIÓN FARMACIA — 3 A 5 MINUTOS
+
+Esta sección es una variante de presentación; no sustituye el guion genérico ni representa el sistema definitivo del cliente.
+
+1. Pulsa **Restablecer demo** y confirma.
+2. Muestra el catálogo ficticio.
+3. Muestra el stock disponible.
+4. Registra **Cliente Demostración**.
+5. Crea un pedido por una unidad.
+6. Muestra el estado **Pago pendiente**.
+7. Aprueba el pago mock y señala **PAGO SIMULADO — No mueve dinero ni utiliza Webpay real**.
+8. Muestra la disminución de stock.
+9. Si aporta a la conversación, emite el documento mock y señala **DOCUMENTO TRIBUTARIO SIMULADO — No emite documentos ante el SII**.
+10. Cierra mostrando la trazabilidad.
+
+No mostrar más salvo pregunta directa. Los agentes son una funcionalidad secundaria y siempre requieren aprobación humana.
+
+Consulta [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md) para las frases de apertura/cierre, límites y Plan B.
+
+## Guion genérico de demo operativa
 
 Duración esperada: 5 a 8 minutos. Sirve igual en navegador, Windows y Android.
 
@@ -15,7 +36,7 @@ El estado inicial incluye un producto, 12 unidades y un cliente. Esto permite mo
 
 1. **Catálogo:** crea `DEMO-002 / Pack Inicio / 15990`.
 2. **Inventario:** elige `DEMO-002` y recibe 10 unidades.
-3. **CRM:** registra a María y decide si autoriza comunicaciones.
+3. **CRM:** registra a Cliente Demostración y decide si autoriza comunicaciones.
 4. **Ventas:** elige cliente y producto, crea un pedido por una unidad. Comprueba que aparece como `Pago pendiente`.
 5. **Cobro:** aprueba el pago mock. Comprueba que el estado cambia a `Pagado` y el stock disminuye.
 6. **Tributación:** emite la boleta mock. Un segundo intento debe ser rechazado.

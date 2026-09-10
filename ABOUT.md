@@ -4,7 +4,7 @@ Commerce Operating System es una plataforma comercial modular con una demo compl
 
 ## Texto recomendado para GitHub About
 
-> 🧭 Commerce OS v0.1.0 — operación comercial modular: catálogo, stock, CRM, pedidos, pago y boleta mock, eventos auditables y agentes con aprobación. Demo local + Windows + Android; backend Fastify, PostgreSQL y FastAPI. Sin dinero ni SII real.
+> 🧭 Commerce OS v0.2.0 — demo conceptual de operación comercial: catálogo, stock, CRM, pedidos, pagos mock y trazabilidad auditable. Local-first + Windows + Android; backend Fastify, PostgreSQL y FastAPI. Sin dinero ni SII real.
 
 ## Topics recomendados
 

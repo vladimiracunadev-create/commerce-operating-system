@@ -1,6 +1,6 @@
 # Estado verificable
 
-Fecha de verificación documental: 2026-08-31.
+Fecha de verificación documental: 2026-09-09.
 
 ## Leyenda
 
@@ -23,6 +23,7 @@ Fecha de verificación documental: 2026-08-31.
 | Agentes | 🟡 | cinco perfiles, fallback seguro, LLM opcional |
 | RBAC | 🟡 | roles reales; identidad demostrada por encabezado o selector |
 | Restablecimiento | ✅ | estado inicial local y limpieza transaccional del servidor |
+| Modo de presentación conceptual | ✅ | recorrido visible de seis pasos, advertencias mock y capturas automatizadas |
 
 ## Superficies
 

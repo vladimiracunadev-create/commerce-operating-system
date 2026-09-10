@@ -5,6 +5,7 @@
 | Quiero… | Comando | Requisitos |
 |---|---|---|
 | ver la demo de inmediato | `corepack pnpm demo:local` | Node.js 22+ |
+| validar la demo antes de presentar | `corepack pnpm demo:check` | Node.js 22+ |
 | probar API y PostgreSQL | `docker compose up --build` | Docker Desktop/Engine |
 | abrir la app Windows | `corepack pnpm desktop` | Windows 10/11, Node.js 22+ |
 | construir el EXE portable | `corepack pnpm desktop:pack` | Windows 10/11 |
@@ -19,6 +20,7 @@ cd commerce-operating-system
 corepack enable
 corepack pnpm install --frozen-lockfile
 corepack pnpm check
+corepack pnpm demo:check
 ```
 
 ## Demo local

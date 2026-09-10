@@ -2,6 +2,27 @@
 
 Todos los cambios relevantes de Commerce Operating System se documentan aquí.
 
+## 0.2.0 — 2026-09-09
+
+### Añadido
+
+- Modo visible **Demo conceptual** con recorrido principal de seis pasos.
+- Advertencias inequívocas para pago y documento tributario simulados.
+- Preflight reproducible mediante `pnpm demo:check`.
+- Smoke test de interfaz con Chromium/Electron y capturas verificables.
+- Guía específica de apoyo para la reunión del 10 de septiembre de 2026.
+
+### Cambiado
+
+- Agentes movidos fuera del recorrido principal y mantenidos como función secundaria.
+- Datos iniciales de formulario reemplazados por identidades inequívocamente ficticias.
+- Caché PWA actualizada para incluir los estilos de presentación.
+
+### Seguridad
+
+- Webpay, SII, ERP, multisucursal y preparados magistrales se mantienen explícitamente pendientes.
+- Ninguna integración, credencial, secreto o escritura externa fue incorporada.
+
 ## 0.1.0 — 2026-08-31
 
 ### Añadido
