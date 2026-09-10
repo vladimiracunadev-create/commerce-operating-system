@@ -7,7 +7,7 @@ const required = [
   'apps/web/index.html', 'apps/web/app.js', 'apps/web/styles.css', 'apps/web/presentation.css', 'apps/web/manifest.webmanifest', 'apps/desktop/main.cjs',
   'packages/demo-core/index.js', 'capacitor.config.json', '.github/workflows/ci.yml', '.github/workflows/release.yml',
   'docs/REUNION_FARMACIA_2026-09-10.md', 'scripts/demo-check.mjs',
-  'scripts/smoke-web.cjs',
+  'docs/DOMAIN-MODEL.md', 'infra/sql/002_hito3_consistency.sql', 'scripts/consistency-api.mjs', 'scripts/smoke-web.cjs',
   'landing/index.html', 'landing/styles.css', '.github/workflows/pages.yml',
 ];
 for (const file of required) await access(path.resolve(file));

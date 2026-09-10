@@ -37,3 +37,13 @@ Los casos de uso lanzan errores de dominio con código estable y estado HTTP. El
 ## Contrato de eventos v1
 
 Cada evento incluye `event_id`, `event_type`, agregado, `tenant_id`, `actor_id`, `correlation_id`, `causation_id`, `version`, fecha y payload. El adaptador PostgreSQL guarda esos metadatos en `outbox_events`; su entrega asíncrona todavía no está implementada.
+
+## Consistencia transaccional
+
+- `POST /api/orders/:id/pay/mock` acepta `Idempotency-Key`. La misma clave y pedido devuelven el pago existente; usarla para otro pedido produce conflicto.
+- `POST /api/orders/:id/cancel` es idempotente y libera la reserva una sola vez.
+- `POST /api/demo/reservations/expire` cancela reservas pendientes anteriores al umbral usando `FOR UPDATE SKIP LOCKED`.
+- La emisión tributaria mock devuelve el documento existente ante reintentos concurrentes.
+- Pago, cancelación, expiración, cambios de stock y eventos comparten una única transacción PostgreSQL.
+
+`infra/sql/002_hito3_consistency.sql` añade constraints e índice idempotente de forma repetible. Es un puente de actualización explícito; el historial y runner general de migraciones pertenecen al Hito 4.

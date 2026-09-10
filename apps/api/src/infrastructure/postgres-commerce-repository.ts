@@ -84,19 +84,26 @@ export class PostgresCommerceRepository implements CommerceRepository {
       const tax = Math.round(subtotal * 0.19);
       const order = (await client.query("INSERT INTO orders(company_id,customer_id,status,subtotal_cents,tax_cents,total_cents) VALUES($1,$2,'pending_payment',$3,$4,$5) RETURNING *", [context.tenantId, input.customer_id, subtotal, tax, subtotal + tax])).rows[0];
       await client.query('INSERT INTO order_items(order_id,product_id,quantity,unit_price_cents) VALUES($1,$2,$3,$4)', [order.id, input.product_id, quantity, product.price_cents]);
-      await client.query('UPDATE stock SET reserved=reserved+$1,updated_at=now() WHERE warehouse_id=$2 AND product_id=$3', [quantity, context.warehouseId, input.product_id]);
+      const reservation = await client.query('UPDATE stock SET reserved=reserved+$1,updated_at=now() WHERE warehouse_id=$2 AND product_id=$3 AND reserved+$1 <= quantity', [quantity, context.warehouseId, input.product_id]);
+      if (reservation.rowCount !== 1) throw new DomainError('insufficient_stock', 409, 'Insufficient available stock.');
       await this.emit(client, createDomainEvent(context, 'sales.order.created', 'order', order.id, { order_id: order.id, total_cents: order.total_cents }));
       await this.emit(client, createDomainEvent(context, 'inventory.stock.reserved', 'order', order.id, { product_id: input.product_id, quantity, warehouse_id: context.warehouseId }));
       return order;
     });
   }
 
-  async payOrder(context: OperationContext, orderId: string) {
+  async payOrder(context: OperationContext, orderId: string, idempotencyKey: string) {
     return this.transaction(async (client) => {
+      await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1, 0))', [`mock:${idempotencyKey}`]);
+      const replay = (await client.query("SELECT p.* FROM payments p JOIN orders o ON o.id=p.order_id WHERE p.provider='mock' AND p.payload->>'idempotency_key'=$1 AND o.company_id=$2 LIMIT 1", [idempotencyKey, context.tenantId])).rows[0];
+      if (replay) {
+        if (replay.order_id !== orderId) throw new DomainError('idempotency_conflict', 409, 'Idempotency key was already used for another order.');
+        return replay;
+      }
       const order = (await client.query('SELECT * FROM orders WHERE id=$1 AND company_id=$2 FOR UPDATE', [orderId, context.tenantId])).rows[0];
       if (!order) throw new DomainError('not_found', 404, 'Order not found.');
       assertOrderTransition(order.status, 'paid');
-      const payment = (await client.query("INSERT INTO payments(order_id,provider,external_id,status,amount_cents,payload) VALUES($1,'mock','DEMO-'||substr(gen_random_uuid()::text,1,8),'approved',$2,$3) RETURNING *", [order.id, order.total_cents, { mode: 'demo' }])).rows[0];
+      const payment = (await client.query("INSERT INTO payments(order_id,provider,external_id,status,amount_cents,payload) VALUES($1,'mock','DEMO-'||substr(gen_random_uuid()::text,1,8),'approved',$2,$3) RETURNING *", [order.id, order.total_cents, { mode: 'demo', idempotency_key: idempotencyKey }])).rows[0];
       await client.query("UPDATE orders SET status='paid' WHERE id=$1", [order.id]);
       const items = (await client.query('SELECT product_id,quantity FROM order_items WHERE order_id=$1', [order.id])).rows;
       for (const item of items) {
@@ -108,13 +115,31 @@ export class PostgresCommerceRepository implements CommerceRepository {
     });
   }
 
+  async cancelOrder(context: OperationContext, orderId: string, reason: string) {
+    return this.transaction(async (client) => {
+      const order = (await client.query('SELECT * FROM orders WHERE id=$1 AND company_id=$2 FOR UPDATE', [orderId, context.tenantId])).rows[0];
+      if (!order) throw new DomainError('not_found', 404, 'Order not found.');
+      if (order.status === 'cancelled') return order;
+      assertOrderTransition(order.status, 'cancelled');
+      return this.cancelReservedOrder(client, context, order, reason, 'sales.order.cancelled');
+    });
+  }
+
+  async expireReservations(context: OperationContext, olderThanMinutes: number) {
+    return this.transaction(async (client) => {
+      const orders = (await client.query("SELECT * FROM orders WHERE company_id=$1 AND status='pending_payment' AND created_at <= now() - make_interval(mins => $2) ORDER BY created_at FOR UPDATE SKIP LOCKED", [context.tenantId, olderThanMinutes])).rows;
+      for (const order of orders) await this.cancelReservedOrder(client, context, order, 'reservation_expired', 'sales.order.expired');
+      return { expired: orders.length, order_ids: orders.map((order) => order.id) };
+    });
+  }
+
   async issueTaxDocument(context: OperationContext, orderId: string) {
     return this.transaction(async (client) => {
       const order = (await client.query('SELECT * FROM orders WHERE id=$1 AND company_id=$2 FOR UPDATE', [orderId, context.tenantId])).rows[0];
       if (!order) throw new DomainError('not_found', 404, 'Order not found.');
       if (order.status !== 'paid') throw new DomainError('order_must_be_paid', 409, 'Order must be paid.');
       const existing = (await client.query('SELECT id FROM tax_documents WHERE order_id=$1 LIMIT 1', [order.id])).rows[0];
-      if (existing) throw new DomainError('tax_document_already_exists', 409, 'Order already has a demo tax document.', { tax_document_id: existing.id });
+      if (existing) return (await client.query('SELECT * FROM tax_documents WHERE id=$1', [existing.id])).rows[0];
       const folio = `DEMO-${Date.now()}`;
       const document = (await client.query("INSERT INTO tax_documents(order_id,provider,document_type,folio,status,payload) VALUES($1,'mock-sii','boleta',$2,'issued',$3) RETURNING *", [order.id, folio, { warning: 'Demo only. Production DTE requires a certified SII integration/provider.' }])).rows[0];
       await this.emit(client, createDomainEvent(context, 'tax.document.issued', 'order', order.id, { tax_document_id: document.id, folio }));
@@ -127,6 +152,18 @@ export class PostgresCommerceRepository implements CommerceRepository {
       const run = (await client.query('INSERT INTO agent_runs(company_id,agent_name,requested_by,input,output) VALUES($1,$2,$3,$4,$5) RETURNING id', [context.tenantId, agent, context.actorId, input, output])).rows[0];
       await this.emit(client, createDomainEvent(context, 'ai.agent.completed', 'agent', run.id, { agent }));
     });
+  }
+
+  private async cancelReservedOrder(client: PoolClient, context: OperationContext, order: JsonRecord, reason: string, eventType: string) {
+    const items = (await client.query('SELECT product_id,quantity FROM order_items WHERE order_id=$1', [order.id])).rows;
+    for (const item of items) {
+      const result = await client.query('UPDATE stock SET reserved=reserved-$1,updated_at=now() WHERE warehouse_id=$2 AND product_id=$3 AND reserved >= $1', [item.quantity, context.warehouseId, item.product_id]);
+      if (result.rowCount !== 1) throw new DomainError('inventory_inconsistent', 409, 'Stock reservation is inconsistent.');
+      await this.emit(client, createDomainEvent(context, 'inventory.stock.released', 'order', String(order.id), { product_id: item.product_id, quantity: item.quantity, warehouse_id: context.warehouseId, reason }));
+    }
+    const cancelled = (await client.query("UPDATE orders SET status='cancelled' WHERE id=$1 RETURNING *", [order.id])).rows[0];
+    await this.emit(client, createDomainEvent(context, eventType, 'order', String(order.id), { reason }));
+    return cancelled;
   }
 
   private async transaction<T>(operation: (client: PoolClient) => Promise<T>) {

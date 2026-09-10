@@ -22,7 +22,12 @@ export async function registerRoutes(app: FastifyInstance, service: CommerceServ
   app.post('/api/stock/receive', async (request, reply) => service.stock(context(request, reply), request.body as JsonRecord));
   app.post('/api/customers', async (request, reply) => reply.code(201).send(await service.customer(context(request, reply), request.body as JsonRecord)));
   app.post('/api/orders', async (request, reply) => reply.code(201).send(await service.order(context(request, reply), request.body as JsonRecord)));
-  app.post('/api/orders/:id/pay/mock', async (request: ApiRequest, reply) => service.pay(context(request, reply), request.params.id));
+  app.post('/api/orders/:id/pay/mock', async (request: ApiRequest, reply) => {
+    const operation = context(request, reply);
+    return service.pay(operation, request.params.id, request.headers['idempotency-key'] ?? operation.correlationId);
+  });
+  app.post('/api/orders/:id/cancel', async (request: ApiRequest, reply) => service.cancel(context(request, reply), request.params.id, (request.body ?? {}) as JsonRecord));
+  app.post('/api/demo/reservations/expire', async (request, reply) => service.expire(context(request, reply), (request.body ?? {}) as JsonRecord));
   app.post('/api/orders/:id/tax-document/mock', async (request: ApiRequest, reply) => service.tax(context(request, reply), request.params.id));
   app.post('/api/agents/:agent', async (request: ApiRequest, reply) => service.agent(context(request, reply), request.params.agent, request.body as JsonRecord));
   app.get('/api/integrations', async () => service.integrations());

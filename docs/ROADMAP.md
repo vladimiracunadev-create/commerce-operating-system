@@ -66,6 +66,8 @@ Criterios de salida:
 
 Objetivo: garantizar efectos exactamente una vez dentro de las capacidades mock actuales.
 
+Estado: **completado el 10 de septiembre de 2026**.
+
 Alcance propuesto:
 
 - pago idempotente por clave;
@@ -77,10 +79,12 @@ Alcance propuesto:
 
 Criterios de salida:
 
-- mismo request idempotente devuelve el mismo resultado;
-- no hay doble descuento, doble liberación o doble documento;
-- un fallo del evento revierte la operación;
-- stock negativo/sobre-reservado no puede confirmarse.
+- [x] la misma clave de pago devuelve el mismo resultado aun bajo carrera; reutilizarla en otro pedido se rechaza;
+- [x] bloqueos de fila y advisory lock impiden doble descuento, doble liberación y doble documento;
+- [x] operación comercial y evento comparten transacción; un trigger de prueba demuestra el rollback integral;
+- [x] cancelación y expiración liberan la reserva exactamente una vez;
+- [x] constraints PostgreSQL impiden cantidad/reserva negativas y reserva superior al saldo;
+- [x] `scripts/consistency-api.mjs` ejecuta el gate PostgreSQL en local y CI.
 
 ### Hito 4 — Migraciones y multiempresa
 
@@ -176,4 +180,4 @@ flowchart LR
 
 ## Próxima decisión
 
-El Hito 2 está cerrado. El siguiente gate es completar el Hito 3 con idempotencia, liberación única y pruebas PostgreSQL concurrentes antes de iniciar migraciones y multiempresa.
+Los hitos 2 y 3 están cerrados. El siguiente trabajo autorizado debe comenzar por el Hito 4: runner de migraciones, aislamiento multiempresa y actualización probada desde `0.3.0`.

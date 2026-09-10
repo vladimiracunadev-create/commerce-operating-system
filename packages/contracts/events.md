@@ -6,6 +6,7 @@ inventory.stock.reserved
 inventory.stock.released
 sales.order.created
 sales.order.cancelled
+sales.order.expired
 payments.payment.approved
 payments.payment.failed
 fulfilment.shipment.created

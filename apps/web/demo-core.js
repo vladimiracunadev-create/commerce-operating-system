@@ -152,21 +152,55 @@ export class DemoStore {
     return clone(order);
   }
 
-  payOrder(orderId, role = 'company_admin') {
+  payOrder(orderId, role = 'company_admin', idempotencyKey = id('attempt')) {
     assertCapability(role, 'payments');
     const order = this.state.orders.find((item) => item.id === orderId);
     if (!order) throw new Error('Pedido no encontrado.');
+    const replay = this.state.payments.find((item) => item.provider === 'mock' && item.idempotency_key === idempotencyKey);
+    if (replay) {
+      if (replay.order_id !== order.id) throw new Error('La clave de idempotencia ya fue usada para otro pedido.');
+      return clone(replay);
+    }
     if (order.status !== 'pending_payment') throw new Error(`El pedido está en estado ${order.status}.`);
     const stock = this.state.stock.find((item) => item.product_id === order.product_id);
     if (!stock || stock.quantity < order.quantity || stock.reserved < order.quantity) throw new Error('La reserva de stock es inconsistente.');
     stock.quantity -= order.quantity;
     stock.reserved -= order.quantity;
     order.status = 'paid';
-    const payment = { id: id('payment'), order_id: order.id, provider: 'mock', status: 'approved', amount_cents: order.total_cents, created_at: now() };
+    const payment = { id: id('payment'), order_id: order.id, provider: 'mock', status: 'approved', amount_cents: order.total_cents, idempotency_key: idempotencyKey, created_at: now() };
     this.state.payments.unshift(payment);
     this.#emit('payments.payment.approved', 'order', order.id, { payment_id: payment.id, provider: 'mock' });
     this.#save();
     return clone(payment);
+  }
+
+  cancelOrder(orderId, role = 'company_admin', reason = 'cancelled_by_user') {
+    assertCapability(role, 'orders');
+    const order = this.state.orders.find((item) => item.id === orderId);
+    if (!order) throw new Error('Pedido no encontrado.');
+    if (order.status === 'cancelled') return clone(order);
+    if (order.status !== 'pending_payment') throw new Error(`El pedido está en estado ${order.status}.`);
+    const stock = this.state.stock.find((item) => item.product_id === order.product_id);
+    if (!stock || stock.reserved < order.quantity) throw new Error('La reserva de stock es inconsistente.');
+    stock.reserved -= order.quantity;
+    order.status = 'cancelled';
+    this.#emit('inventory.stock.released', 'order', order.id, { product_id: order.product_id, quantity: order.quantity, reason });
+    this.#emit('sales.order.cancelled', 'order', order.id, { reason });
+    this.#save();
+    return clone(order);
+  }
+
+  expireReservations(olderThanMinutes = 30, role = 'company_admin') {
+    assertCapability(role, 'admin');
+    if (!Number.isInteger(olderThanMinutes) || olderThanMinutes < 0) throw new Error('olderThanMinutes debe ser un entero no negativo.');
+    const cutoff = Date.now() - olderThanMinutes * 60_000;
+    const expired = this.state.orders.filter((order) => order.status === 'pending_payment' && Date.parse(order.created_at) <= cutoff);
+    for (const order of expired) {
+      this.cancelOrder(order.id, 'company_admin', 'reservation_expired');
+      this.state.events[0].event_type = 'sales.order.expired';
+    }
+    this.#save();
+    return { expired: expired.length, order_ids: expired.map((order) => order.id) };
   }
 
   issueTaxDocument(orderId, role = 'company_admin') {
@@ -174,7 +208,8 @@ export class DemoStore {
     const order = this.state.orders.find((item) => item.id === orderId);
     if (!order) throw new Error('Pedido no encontrado.');
     if (order.status !== 'paid') throw new Error('El pedido debe estar pagado.');
-    if (this.state.tax_documents.some((document) => document.order_id === order.id)) throw new Error('El pedido ya tiene una boleta demo.');
+    const existing = this.state.tax_documents.find((document) => document.order_id === order.id);
+    if (existing) return clone(existing);
     const document = { id: id('tax'), order_id: order.id, provider: 'mock-sii', document_type: 'boleta', folio: `DEMO-${Date.now()}`, status: 'issued', created_at: now() };
     this.state.tax_documents.unshift(document);
     this.#emit('tax.document.issued', 'order', order.id, { tax_document_id: document.id, folio: document.folio });

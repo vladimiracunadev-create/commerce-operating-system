@@ -36,12 +36,42 @@ test('no permite vender más stock que el disponible', () => {
   assert.throws(() => store.createOrder({ customer_id: 'customer-demo', product_id: 'product-demo', quantity: 99 }), /Stock disponible insuficiente/);
 });
 
-test('impide emitir dos boletas para el mismo pedido', () => {
+test('reintentar una boleta devuelve el mismo documento sin duplicarlo', () => {
   const store = new DemoStore(memoryStorage());
   const order = store.createOrder({ customer_id: 'customer-demo', product_id: 'product-demo', quantity: 1 });
   store.payOrder(order.id);
-  store.issueTaxDocument(order.id);
-  assert.throws(() => store.issueTaxDocument(order.id), /ya tiene una boleta/);
+  const first = store.issueTaxDocument(order.id);
+  const replay = store.issueTaxDocument(order.id);
+  assert.equal(replay.id, first.id);
+  assert.equal(store.snapshot().tax_documents.length, 1);
+});
+
+test('el pago idempotente devuelve el mismo resultado y descuenta una sola vez', () => {
+  const store = new DemoStore(memoryStorage());
+  const order = store.createOrder({ customer_id: 'customer-demo', product_id: 'product-demo', quantity: 2 });
+  const first = store.payOrder(order.id, 'company_admin', 'payment-request-1');
+  const replay = store.payOrder(order.id, 'company_admin', 'payment-request-1');
+  assert.equal(replay.id, first.id);
+  assert.equal(store.snapshot().stock[0].quantity, 10);
+  assert.equal(store.snapshot().payments.length, 1);
+});
+
+test('cancelar dos veces libera la reserva exactamente una vez', () => {
+  const store = new DemoStore(memoryStorage());
+  const order = store.createOrder({ customer_id: 'customer-demo', product_id: 'product-demo', quantity: 2 });
+  store.cancelOrder(order.id);
+  store.cancelOrder(order.id);
+  assert.equal(store.snapshot().stock[0].reserved, 0);
+  assert.equal(store.snapshot().events.filter((event) => event.event_type === 'inventory.stock.released').length, 1);
+});
+
+test('expirar reservas pendientes conserva el stock físico', () => {
+  const store = new DemoStore(memoryStorage());
+  store.createOrder({ customer_id: 'customer-demo', product_id: 'product-demo', quantity: 2 });
+  const result = store.expireReservations(0);
+  assert.equal(result.expired, 1);
+  assert.equal(store.snapshot().stock[0].quantity, 12);
+  assert.equal(store.snapshot().stock[0].reserved, 0);
 });
 
 test('aplica permisos por rol también en el motor local', () => {

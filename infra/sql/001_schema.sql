@@ -43,7 +43,10 @@ CREATE TABLE IF NOT EXISTS stock (
   quantity INTEGER NOT NULL DEFAULT 0,
   reserved INTEGER NOT NULL DEFAULT 0,
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  PRIMARY KEY (warehouse_id, product_id)
+  PRIMARY KEY (warehouse_id, product_id),
+  CONSTRAINT stock_quantity_nonnegative CHECK (quantity >= 0),
+  CONSTRAINT stock_reserved_nonnegative CHECK (reserved >= 0),
+  CONSTRAINT stock_reserved_within_quantity CHECK (reserved <= quantity)
 );
 
 CREATE TABLE IF NOT EXISTS customers (
@@ -88,6 +91,10 @@ CREATE TABLE IF NOT EXISTS payments (
   payload JSONB NOT NULL DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS payments_mock_idempotency
+ON payments(provider, (payload->>'idempotency_key'))
+WHERE payload ? 'idempotency_key';
 
 CREATE TABLE IF NOT EXISTS tax_documents (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

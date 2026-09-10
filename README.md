@@ -13,7 +13,7 @@
 
 ![Versión](https://img.shields.io/badge/versión-0.3.0-55e6a5?style=for-the-badge)
 ![Superficies](https://img.shields.io/badge/superficies-Web_·_Windows_·_Android-36a3ff?style=for-the-badge)
-![Pruebas](https://img.shields.io/badge/pruebas-17_verdes-2ea44f?style=for-the-badge)
+![Pruebas](https://img.shields.io/badge/pruebas-20_verdes-2ea44f?style=for-the-badge)
 ![Modo](https://img.shields.io/badge/modo-demo_segura-f8b84e?style=for-the-badge)
 
 [Inicio rápido](docs/QUICKSTART.md) · [Guion de demo](docs/DEMO.md) · [Apoyo para reunión](docs/REUNION_FARMACIA_2026-09-10.md) · [Estado verificable](docs/STATUS.md) · [Plataformas](docs/PLATFORMS.md) · [Instancias tecnológicas](docs/TECHNOLOGY-INSTANCES.md) · [Arquitectura](docs/ARCHITECTURE.md) · [Seguridad](SECURITY.md)
@@ -175,7 +175,8 @@ docs/              # producto, demo, plataformas y arquitectura
 | Comando | Resultado |
 |---|---|
 | `pnpm demo:local` | demo en `127.0.0.1:4173` |
-| `pnpm test` | 17 pruebas de núcleo local, dominio API, presentación, documentación y Pages |
+| `pnpm test` | 20 pruebas de núcleo local, dominio API, presentación, documentación y Pages |
+| `pnpm test:consistency` | carreras, idempotencia, rollback y constraints sobre el stack Docker |
 | `pnpm build:api` | compilación estricta TypeScript |
 | `pnpm check` | núcleo, API, documentación y sincronía del bundle |
 | `pnpm desktop` | aplicación Windows en modo desarrollo |
@@ -204,6 +205,7 @@ Consulta [SECURITY.md](SECURITY.md) antes de conectar proveedores reales.
 | [Plataformas](docs/PLATFORMS.md) | requisitos de navegador, Windows y Android |
 | [Instancias tecnológicas](docs/TECHNOLOGY-INSTANCES.md) | portar el producto sin cambiar el contrato |
 | [Arquitectura](docs/ARCHITECTURE.md) | límites, flujos y decisiones |
+| [Modelo de dominio](docs/DOMAIN-MODEL.md) | estados, errores, eventos e invariantes transaccionales |
 | [Integraciones](docs/INTEGRATIONS.md) | contratos para pagos, DTE y canales |
 | [Roles y agentes](docs/ROLES_AND_AGENTS.md) | permisos y guardrails humanos |
 | [Changelog](CHANGELOG.md) | evolución por versión |

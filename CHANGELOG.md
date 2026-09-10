@@ -11,6 +11,11 @@ Todos los cambios relevantes de Commerce Operating System se documentan aquí.
 - Los eventos de servidor quedan versionados y conservan tenant, actor, correlación y causación.
 - `@fastify/static` se actualiza a `10.1.2`, eliminando la vulnerabilidad alta aplicable.
 - La suite determinista crece de 11 a 17 pruebas.
+- Pagos mock aceptan clave idempotente y conservan un único resultado bajo solicitudes concurrentes.
+- Cancelación y expiración liberan reservas una vez; la boleta mock devuelve el documento existente al reintentarse.
+- Operaciones y eventos comparten transacción, con una prueba PostgreSQL que fuerza y verifica rollback.
+- Constraints de base de datos impiden stock o reservas negativas y reservas superiores al saldo.
+- La suite determinista crece de 17 a 20 pruebas y CI incorpora el gate PostgreSQL de consistencia.
 - La guía de reunión de la farmacia se declara como referencia canónica para el recorrido local de 3 a 5 minutos.
 - Docker se documenta como validación técnica previa y respaldo opcional, no como requisito de la presentación comercial.
 - Se añade una landing pública autocontenida con demo web, capturas, límites, guía canónica y descargas de `v0.3.0` mediante GitHub Pages.

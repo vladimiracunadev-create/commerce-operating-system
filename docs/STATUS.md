@@ -14,12 +14,12 @@ Fecha de verificación documental y funcional: 2026-09-10.
 | Capacidad | Estado | Evidencia |
 |---|---:|---|
 | Catálogo | ✅ | creación, SKU único y precio positivo |
-| Inventario | ✅ | recepción, reserva, disponibilidad y descuento |
+| Inventario | ✅ | recepción, reserva, disponibilidad, descuento y liberación única por cancelación/expiración |
 | CRM | ✅ | cliente, email y consentimiento |
 | Pedidos | ✅ | cálculo neto + IVA demo 19 %, reserva transaccional en API |
-| Pago | 🟡 | aprobación mock; no mueve dinero |
-| Documento tributario | 🟡 | boleta mock única por pedido; no contacta al SII |
-| Eventos | ✅ | registro cronológico; contrato v1 con tenant, actor, correlación y causación en servidor |
+| Pago | 🟡 | aprobación mock idempotente y segura bajo concurrencia; no mueve dinero |
+| Documento tributario | 🟡 | boleta mock única e idempotente bajo concurrencia; no contacta al SII |
+| Eventos | ✅ | registro v1 atómico con la operación; tenant, actor, correlación y causación |
 | Agentes | 🟡 | cinco perfiles, fallback seguro, LLM opcional |
 | RBAC | 🟡 | roles reales; identidad demostrada por encabezado o selector |
 | Restablecimiento | ✅ | estado inicial local y limpieza transaccional del servidor |

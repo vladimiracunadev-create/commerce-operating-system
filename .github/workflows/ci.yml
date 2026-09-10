@@ -47,6 +47,8 @@ jobs:
         run: docker compose up --build --detach --wait
       - name: Run end-to-end smoke test
         run: node scripts/smoke-api.mjs
+      - name: Run PostgreSQL consistency tests
+        run: node scripts/consistency-api.mjs
       - name: Service logs
         if: failure()
         run: docker compose logs --no-color

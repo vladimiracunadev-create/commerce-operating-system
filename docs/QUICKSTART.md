@@ -51,6 +51,18 @@ curl http://localhost:8080/ready
 curl http://localhost:8100/health
 ```
 
+Para un volumen creado antes del Hito 3, aplica una vez la actualización aditiva (es repetible):
+
+```bash
+docker compose exec -T db psql -v ON_ERROR_STOP=1 -U commerce -d commerce -f /docker-entrypoint-initdb.d/002_hito3_consistency.sql
+```
+
+Con el stack levantado, verifica concurrencia, idempotencia, rollback y constraints:
+
+```bash
+corepack pnpm test:consistency
+```
+
 Para detener sin borrar los datos:
 
 ```bash

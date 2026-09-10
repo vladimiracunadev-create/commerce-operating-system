@@ -37,7 +37,7 @@ El cliente ejecuta las invariantes en el dispositivo y persiste un estado de dem
 
 ### Servidor de referencia
 
-Fastify aplica el mismo recorrido sobre PostgreSQL. Los pedidos reservan stock y los pagos descuentan unidades dentro de transacciones. Los eventos quedan en una tabla outbox; su procesamiento asíncrono pertenece a una etapa posterior.
+Fastify aplica el mismo recorrido sobre PostgreSQL. Los pedidos reservan stock y los pagos descuentan unidades dentro de transacciones. La operación y sus eventos se confirman o revierten juntos. Los eventos quedan en una tabla outbox; su procesamiento asíncrono pertenece a una etapa posterior.
 
 La API se organiza como monolito modular:
 
@@ -76,6 +76,9 @@ La demo `0.3.0` implementa un corte vertical de los módulos 1, 2, 4, 5, 6, 7, 8
 - la disponibilidad es `cantidad - reservado`;
 - un pedido no reserva más unidades que las disponibles;
 - un pago aprobado descuenta cantidad y libera la reserva;
+- la clave idempotente de un pago mock identifica un único resultado;
+- cancelar o expirar un pedido libera cada reserva una sola vez;
+- PostgreSQL impide saldos negativos, reservas negativas o superiores al saldo;
 - un documento tributario mock exige un pedido pagado y es único;
 - cada transición emite un evento;
 - un agente propone, pero no ejecuta escrituras externas.

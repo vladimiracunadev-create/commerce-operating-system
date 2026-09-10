@@ -43,9 +43,21 @@ export class CommerceService {
     });
   }
 
-  pay(context: OperationContext, orderId: unknown) {
+  pay(context: OperationContext, orderId: unknown, idempotencyKey: unknown) {
     assertCapability(context.role, 'payments');
-    return this.repository.payOrder(context, requiredText(orderId, 'order_id'));
+    return this.repository.payOrder(context, requiredText(orderId, 'order_id'), requiredText(idempotencyKey, 'idempotency-key'));
+  }
+
+  cancel(context: OperationContext, orderId: unknown, body: JsonRecord) {
+    assertCapability(context.role, 'orders');
+    return this.repository.cancelOrder(context, requiredText(orderId, 'order_id'), String(body.reason ?? 'cancelled_by_user').trim() || 'cancelled_by_user');
+  }
+
+  expire(context: OperationContext, body: JsonRecord) {
+    assertCapability(context.role, 'admin');
+    const value = Number(body.older_than_minutes ?? 30);
+    if (!Number.isInteger(value) || value < 0) throw new DomainError('validation_error', 400, 'older_than_minutes must be a non-negative integer.');
+    return this.repository.expireReservations(context, value);
   }
 
   tax(context: OperationContext, orderId: unknown) {
