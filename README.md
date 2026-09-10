@@ -167,7 +167,7 @@ packages/
 services/agents/   # agentes FastAPI, LLM opcional
 infra/sql/         # esquema PostgreSQL
 docs/              # producto, demo, plataformas y arquitectura
-.github/workflows/ # CI y empaquetado de releases
+.github/workflows/ # CI, publicación de Pages y empaquetado de releases
 ```
 
 ## Comandos de ingeniería
