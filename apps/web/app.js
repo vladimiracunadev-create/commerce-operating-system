@@ -111,6 +111,41 @@ function render() {
   renderEvents();
 }
 
+function activateTab(name, { focus = false } = {}) {
+  const selected = $(`[data-tab="${name}"]`);
+  if (!selected) return;
+  $$('[data-tab]').forEach((button) => {
+    const active = button === selected;
+    button.setAttribute('aria-selected', String(active));
+    button.tabIndex = active ? 0 : -1;
+  });
+  $$('[data-demo-panel]').forEach((panel) => {
+    const active = panel.dataset.demoPanel === name;
+    panel.hidden = !active;
+    panel.classList.toggle('active', active);
+  });
+  if (focus) selected.focus();
+}
+
+const tabButtons = $$('[data-tab]');
+tabButtons.forEach((button, index) => {
+  button.addEventListener('click', () => activateTab(button.dataset.tab));
+  button.addEventListener('keydown', (event) => {
+    let nextIndex;
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabButtons.length;
+    if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = tabButtons.length - 1;
+    if (nextIndex === undefined) return;
+    event.preventDefault();
+    activateTab(tabButtons[nextIndex].dataset.tab, { focus: true });
+  });
+});
+
+$$('[data-go-tab]').forEach((button) => {
+  button.addEventListener('click', () => activateTab(button.dataset.goTab, { focus: true }));
+});
+
 function setConnection(label, status = 'online') {
   $('#connection').className = `connection ${status}`;
   $('#connection span').textContent = label;
@@ -217,4 +252,5 @@ async function detectInitialMode() {
 }
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(() => {});
+activateTab('catalog');
 detectInitialMode();

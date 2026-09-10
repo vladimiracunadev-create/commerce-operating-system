@@ -1,4 +1,4 @@
-const CACHE = 'commerce-os-demo-v2';
+const CACHE = 'commerce-os-demo-v3';
 const ASSETS = ['./', './index.html', './styles.css', './presentation.css', './app.js', './manifest.webmanifest', './assets/logo.svg', './demo-core.js'];
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', (event) => event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)))).then(() => self.clients.claim())));

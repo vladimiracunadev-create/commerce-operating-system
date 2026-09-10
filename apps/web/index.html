@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07111f">
-  <meta name="description" content="Demo conceptual de Commerce OS: catálogo, inventario, clientes, pedidos y trazabilidad, sin integraciones reales.">
+  <meta name="description" content="Demo conceptual guiada de Commerce OS: catálogo, inventario, clientes, pedidos y trazabilidad, sin integraciones reales.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://127.0.0.1:* http://localhost:* http://10.0.2.2:* https:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
-  <title>Commerce Operating System — Demo conceptual</title>
+  <title>Commerce Operating System — Demo conceptual guiada</title>
   <link rel="icon" href="./assets/logo.svg" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./presentation.css">
 </head>
 <body>
-  <a class="skip-link" href="#workspace">Saltar al espacio de trabajo</a>
+  <a class="skip-link" href="#guidedDemo">Saltar a la demo guiada</a>
   <header class="topbar">
     <a class="brand" href="#top" aria-label="Commerce OS, inicio">
       <img src="./assets/logo.svg" alt="" width="38" height="38">
-      <span><strong>Commerce OS</strong><small>Demo conceptual · v0.2.0</small></span>
+      <span><strong>Commerce OS</strong><small>Demo conceptual · v0.3.0</small></span>
     </a>
     <div class="topbar-actions">
       <span class="connection" id="connection"><i></i><span>Iniciando</span></span>
@@ -26,145 +26,185 @@
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero compact-hero" aria-labelledby="hero-title">
       <div>
-        <p class="eyebrow">DEMO CONCEPTUAL · EJECUCIÓN LOCAL</p>
-        <h1 id="hero-title">Commerce Operating System<br><span>Demo conceptual</span></h1>
-        <p class="hero-copy">Referencia funcional para conversar sobre catálogo, inventario, clientes, pedidos y trazabilidad. No corresponde al sistema definitivo de la farmacia.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#workspace">Recorrer la operación</a>
-          <a class="button ghost" href="#architecture">Ver arquitectura</a>
-        </div>
+        <p class="eyebrow">DEMO CONCEPTUAL · 3 A 5 MINUTOS</p>
+        <h1 id="hero-title">Una conversación guiada,<br><span>paso a paso.</span></h1>
+        <p class="hero-copy">Esta referencia permite conversar sobre catálogo, inventario, clientes, pedidos y trazabilidad. No corresponde al sistema definitivo de la farmacia.</p>
+        <a class="button primary" href="#guidedDemo">Comenzar por Catálogo</a>
       </div>
-      <div class="hero-panel" aria-label="Resumen del producto">
-        <div class="orbit"><span>CATÁLOGO</span><span>STOCK</span><span>CRM</span><span>VENTA</span><strong>CO</strong></div>
-        <div class="platform-strip"><span>🌐 Localhost</span><span>▣ Windows</span><span>◆ Android</span></div>
-      </div>
+      <aside class="meeting-card">
+        <strong>Objetivo de esta demo</strong>
+        <p>Visualizar conceptos conocidos y descubrir qué debe definirse durante la Fase 1.</p>
+        <span>No implementa Webpay, SII, ERP ni procesos farmacéuticos reales.</span>
+      </aside>
     </section>
 
     <section class="concept-notice" aria-label="Alcance de la demostración">
-      <strong>Referencia para conversación, no solución aprobada.</strong>
-      <span>Webpay, SII, ERP, preparados magistrales y operación multisucursal requieren levantamiento e integración durante la Fase 1.</span>
+      <strong>Referencia para conversar, no solución aprobada.</strong>
+      <span>Los procesos de tres sucursales, ERP y preparados magistrales están pendientes de levantamiento con el cliente.</span>
     </section>
 
-    <nav class="demo-route" aria-label="Recorrido recomendado de la demo">
-      <span>01 Catálogo</span><b>→</b><span>02 Inventario</span><b>→</b><span>03 Cliente</span><b>→</b><span>04 Pedido</span><b>→</b><span>05 Pago simulado</span><b>→</b><span>06 Trazabilidad</span>
-    </nav>
-
-    <section class="control-deck" aria-label="Configuración de la demo">
-      <div>
-        <label for="role">Perfil activo</label>
-        <select id="role">
-          <option value="company_admin">Administrador</option>
-          <option value="warehouse">Bodega</option>
-          <option value="sales">Ventas</option>
-          <option value="marketing">Marketing</option>
-          <option value="accountant">Contador</option>
-          <option value="ai_operator">Operador IA</option>
-          <option value="auditor">Auditor</option>
-        </select>
-      </div>
-      <div>
-        <span class="label">Motor de datos</span>
-        <div class="segmented" role="group" aria-label="Motor de datos">
-          <button type="button" data-mode="local" class="active">Demo local</button>
-          <button type="button" data-mode="api">API + PostgreSQL</button>
+    <details class="demo-settings">
+      <summary>Opciones de demostración</summary>
+      <div class="control-deck">
+        <div>
+          <label for="role">Perfil activo</label>
+          <select id="role">
+            <option value="company_admin">Administrador</option>
+            <option value="warehouse">Bodega</option>
+            <option value="sales">Ventas</option>
+            <option value="marketing">Marketing</option>
+            <option value="accountant">Contador</option>
+            <option value="ai_operator">Operador IA</option>
+            <option value="auditor">Auditor</option>
+          </select>
         </div>
+        <div>
+          <span class="label">Motor de datos</span>
+          <div class="segmented" role="group" aria-label="Motor de datos">
+            <button type="button" data-mode="local" class="active">Demo local</button>
+            <button type="button" data-mode="api">API + PostgreSQL</button>
+          </div>
+        </div>
+        <div class="api-field" id="apiField" hidden>
+          <label for="apiUrl">URL de API</label>
+          <div class="inline"><input id="apiUrl" value="http://localhost:8080" inputmode="url"><button type="button" class="button ghost compact" id="connectButton">Conectar</button></div>
+        </div>
+        <p class="mode-help" id="modeHelp">Los datos quedan en este dispositivo. No se ejecutan pagos ni documentos reales.</p>
       </div>
-      <div class="api-field" id="apiField" hidden>
-        <label for="apiUrl">URL de API</label>
-        <div class="inline"><input id="apiUrl" value="http://localhost:8080" inputmode="url"><button type="button" class="button ghost compact" id="connectButton">Conectar</button></div>
-      </div>
-      <p class="mode-help" id="modeHelp">Los datos quedan en este dispositivo. No se ejecutan pagos ni documentos reales.</p>
-    </section>
+    </details>
 
-    <section class="metrics" id="metrics" aria-label="Indicadores"></section>
+    <section class="metrics compact-metrics" id="metrics" aria-label="Indicadores"></section>
 
-    <section class="workspace" id="workspace" aria-labelledby="workspace-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">RECORRIDO END-TO-END</p><h2 id="workspace-title">Mesa de operaciones</h2></div>
-        <p>Completa los seis pasos. Cada cambio genera un evento auditable.</p>
+    <section class="guided-demo" id="guidedDemo" aria-labelledby="guided-title">
+      <div class="section-heading guided-heading">
+        <div><p class="eyebrow">RECORRIDO PARA EL CLIENTE</p><h2 id="guided-title">Seis conceptos, una pestaña a la vez</h2></div>
+        <p>Avanza de izquierda a derecha. Cada pestaña responde qué ocurre y por qué importa.</p>
       </div>
 
-      <div class="workflow">
-        <article class="task-card" data-step="01">
-          <header><span>01</span><div><p>CATÁLOGO</p><h3>Crear producto</h3></div></header>
-          <form id="productForm">
-            <label>SKU<input name="sku" value="DEMO-002" required></label>
-            <label>Nombre<input name="name" value="Pack Inicio" required></label>
-            <label>Precio neto CLP<input name="price_cents" type="number" min="1" value="15990" required></label>
-            <button class="button primary" type="submit">Guardar producto</button>
+      <div class="tab-list" role="tablist" aria-label="Pasos de la demo">
+        <button role="tab" id="tab-catalog" aria-controls="panel-catalog" aria-selected="true" data-tab="catalog"><span>1</span>Catálogo</button>
+        <button role="tab" id="tab-inventory" aria-controls="panel-inventory" aria-selected="false" data-tab="inventory" tabindex="-1"><span>2</span>Inventario</button>
+        <button role="tab" id="tab-customer" aria-controls="panel-customer" aria-selected="false" data-tab="customer" tabindex="-1"><span>3</span>Cliente</button>
+        <button role="tab" id="tab-order" aria-controls="panel-order" aria-selected="false" data-tab="order" tabindex="-1"><span>4</span>Pedido</button>
+        <button role="tab" id="tab-payment" aria-controls="panel-payment" aria-selected="false" data-tab="payment" tabindex="-1"><span>5</span>Pago simulado</button>
+        <button role="tab" id="tab-traceability" aria-controls="panel-traceability" aria-selected="false" data-tab="traceability" tabindex="-1"><span>6</span>Trazabilidad</button>
+      </div>
+
+      <div class="tab-stage">
+        <section class="demo-panel active" id="panel-catalog" role="tabpanel" aria-labelledby="tab-catalog" data-demo-panel="catalog">
+          <div class="panel-intro">
+            <p class="eyebrow">PASO 1 · CATÁLOGO</p>
+            <h3>Definir qué se vende</h3>
+            <p>Un catálogo organiza productos mediante un SKU, un nombre y un precio. En la Fase 1 se definirá cómo llegan los datos reales desde el ERP.</p>
+            <div class="client-explanation"><strong>Qué demuestra</strong><span>Una base ordenada para publicar y operar productos.</span></div>
+            <div class="client-explanation muted"><strong>Qué no significa</strong><span>No representa el catálogo real ni sus reglas farmacéuticas.</span></div>
+          </div>
+          <form id="productForm" class="focused-form">
+            <label>SKU ficticio<input name="sku" value="DEMO-002" required></label>
+            <label>Nombre<input name="name" value="Producto Demo B" required></label>
+            <label>Precio neto de ejemplo<input name="price_cents" type="number" min="1" value="15990" required></label>
+            <button class="button primary" type="submit">Guardar producto ficticio</button>
           </form>
-        </article>
+          <button class="button ghost tab-next" type="button" data-go-tab="inventory">Continuar a Inventario →</button>
+        </section>
 
-        <article class="task-card" data-step="02">
-          <header><span>02</span><div><p>INVENTARIO</p><h3>Recibir stock</h3></div></header>
-          <form id="stockForm">
+        <section class="demo-panel" id="panel-inventory" role="tabpanel" aria-labelledby="tab-inventory" data-demo-panel="inventory" hidden>
+          <div class="panel-intro">
+            <p class="eyebrow">PASO 2 · INVENTARIO</p>
+            <h3>Registrar unidades disponibles</h3>
+            <p>El inventario separa cantidad, reserva y disponibilidad. Las reglas por sucursal se investigarán con el cliente.</p>
+            <div class="client-explanation"><strong>Qué demuestra</strong><span>Cómo una entrada de stock queda vinculada al producto.</span></div>
+            <div class="client-explanation muted"><strong>Pendiente de Fase 1</strong><span>Stock por sucursal, transferencias, reserva y retiro reales.</span></div>
+          </div>
+          <form id="stockForm" class="focused-form">
             <label>Producto<select name="product_id" id="productStock" required></select></label>
-            <label>Unidades<input name="quantity" type="number" min="1" value="10" required></label>
-            <button class="button primary" type="submit">Ingresar a bodega</button>
+            <label>Unidades de ejemplo<input name="quantity" type="number" min="1" value="10" required></label>
+            <button class="button primary" type="submit">Ingresar stock ficticio</button>
           </form>
-        </article>
+          <button class="button ghost tab-next" type="button" data-go-tab="customer">Continuar a Cliente →</button>
+        </section>
 
-        <article class="task-card" data-step="03">
-          <header><span>03</span><div><p>CRM</p><h3>Registrar cliente</h3></div></header>
-          <form id="customerForm">
-            <label>Nombre<input name="name" value="Cliente Demostración" required></label>
-            <label>Email<input name="email" type="email" value="cliente.demo@example.com" required></label>
-            <label class="check"><input name="consent_marketing" type="checkbox"> Autoriza comunicaciones</label>
-            <button class="button primary" type="submit">Guardar cliente</button>
+        <section class="demo-panel" id="panel-customer" role="tabpanel" aria-labelledby="tab-customer" data-demo-panel="customer" hidden>
+          <div class="panel-intro">
+            <p class="eyebrow">PASO 3 · CLIENTE</p>
+            <h3>Relacionar una venta con una persona ficticia</h3>
+            <p>El registro permite asociar pedidos y consentimiento. No se deben ingresar pacientes, recetas ni datos personales reales.</p>
+            <div class="client-explanation"><strong>Qué demuestra</strong><span>Una ficha mínima para relacionar operaciones.</span></div>
+            <div class="client-explanation muted"><strong>Qué no significa</strong><span>No es una ficha clínica ni una base productiva de clientes.</span></div>
+          </div>
+          <form id="customerForm" class="focused-form">
+            <label>Nombre ficticio<input name="name" value="Cliente Demostración" required></label>
+            <label>Email ficticio<input name="email" type="email" value="cliente.demo@example.com" required></label>
+            <label class="check"><input name="consent_marketing" type="checkbox"> Autoriza comunicaciones de demostración</label>
+            <button class="button primary" type="submit">Guardar cliente ficticio</button>
           </form>
-        </article>
+          <button class="button ghost tab-next" type="button" data-go-tab="order">Continuar a Pedido →</button>
+        </section>
 
-        <article class="task-card" data-step="04">
-          <header><span>04</span><div><p>VENTAS</p><h3>Crear pedido</h3></div></header>
-          <form id="orderForm">
+        <section class="demo-panel" id="panel-order" role="tabpanel" aria-labelledby="tab-order" data-demo-panel="order" hidden>
+          <div class="panel-intro">
+            <p class="eyebrow">PASO 4 · PEDIDO</p>
+            <h3>Reservar stock antes del pago</h3>
+            <p>El pedido conecta cliente, producto y cantidad. Al crearlo, el sistema reserva unidades para evitar vender stock no disponible.</p>
+            <div class="client-explanation"><strong>Qué demuestra</strong><span>La relación entre venta e inventario dentro de un flujo controlado.</span></div>
+            <div class="client-explanation muted"><strong>Pendiente de Fase 1</strong><span>Despacho, retiro, reglas por sucursal y procesos del ERP.</span></div>
+          </div>
+          <form id="orderForm" class="focused-form">
             <label>Cliente<select name="customer_id" id="customerOrder" required></select></label>
             <label>Producto<select name="product_id" id="productOrder" required></select></label>
             <label>Unidades<input name="quantity" type="number" min="1" value="1" required></label>
-            <button class="button primary" type="submit">Reservar y crear</button>
+            <button class="button primary" type="submit">Crear pedido y reservar</button>
           </form>
-        </article>
+          <button class="button ghost tab-next" type="button" data-go-tab="payment">Continuar a Pago simulado →</button>
+        </section>
 
-        <article class="task-card" data-step="05">
-          <header><span>05</span><div><p>PAGO SIMULADO</p><h3>Cerrar venta de demostración</h3></div></header>
-          <label>Pedido<select id="orderSelect"></select></label>
-          <div class="split-actions"><button class="button primary" id="payButton" type="button">Aprobar pago mock</button><button class="button ghost" id="taxButton" type="button">Emitir boleta mock</button></div>
-          <div class="simulation-warning"><strong>PAGO SIMULADO</strong><span>No mueve dinero ni utiliza Webpay real.</span></div>
-          <div class="simulation-warning tax"><strong>DOCUMENTO TRIBUTARIO SIMULADO</strong><span>No emite documentos ante el SII.</span></div>
-        </article>
+        <section class="demo-panel" id="panel-payment" role="tabpanel" aria-labelledby="tab-payment" data-demo-panel="payment" hidden>
+          <div class="panel-intro">
+            <p class="eyebrow">PASO 5 · PAGO SIMULADO</p>
+            <h3>Mostrar el cierre lógico de una venta</h3>
+            <p>La aprobación mock cambia el estado del pedido y descuenta el stock reservado. Es una simulación interna.</p>
+            <div class="simulation-warning"><strong>PAGO SIMULADO</strong><span>No mueve dinero ni utiliza Webpay real.</span></div>
+            <div class="simulation-warning tax"><strong>DOCUMENTO TRIBUTARIO SIMULADO</strong><span>No emite documentos ante el SII.</span></div>
+          </div>
+          <div class="focused-form payment-actions">
+            <label>Pedido de demostración<select id="orderSelect"></select></label>
+            <button class="button primary" id="payButton" type="button">Aprobar pago mock</button>
+            <button class="button ghost" id="taxButton" type="button">Emitir boleta mock opcional</button>
+          </div>
+          <button class="button ghost tab-next" type="button" data-go-tab="traceability">Continuar a Trazabilidad →</button>
+        </section>
 
-        <article class="task-card trace-card" data-step="06">
-          <header><span>06</span><div><p>TRAZABILIDAD</p><h3>Explicar cada cambio</h3></div></header>
-          <p>Producto creado, stock ingresado, cliente registrado, pedido reservado y pago simulado quedan visibles como eventos auditables.</p>
-          <a class="button primary" href="#traceability">Ver trazabilidad</a>
-          <p class="fine-print">Las acciones rechazadas por rol también quedan demostrables sin alterar el flujo principal.</p>
-        </article>
+        <section class="demo-panel" id="panel-traceability" role="tabpanel" aria-labelledby="tab-traceability" data-demo-panel="traceability" hidden>
+          <div class="panel-intro">
+            <p class="eyebrow">PASO 6 · TRAZABILIDAD</p>
+            <h3>Explicar qué ocurrió y en qué orden</h3>
+            <p>Los eventos permiten reconstruir la historia de la operación: producto, stock, cliente, pedido, pago simulado y documento mock.</p>
+            <div class="client-explanation"><strong>Qué demuestra</strong><span>Visibilidad para revisar operaciones, errores y responsabilidades.</span></div>
+            <div class="client-explanation muted"><strong>Mensaje de cierre</strong><span>La Fase 1 determinará cuáles de estos conceptos aplican realmente.</span></div>
+          </div>
+          <div class="trace-grid" id="traceability">
+            <article class="data-panel"><header><div><p class="eyebrow">ESTADO</p><h3>Pedido actual</h3></div><button id="refreshButton" class="button ghost compact" type="button">Actualizar</button></header><div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody id="ordersTable"></tbody></table></div></article>
+            <article class="timeline-panel"><header><p class="eyebrow">EVIDENCIA</p><h3>Últimos eventos</h3></header><ol id="eventTimeline"></ol></article>
+          </div>
+        </section>
       </div>
     </section>
 
-    <section class="evidence-grid">
-      <article class="data-panel"><header><div><p class="eyebrow">ESTADO</p><h2>Operación actual</h2></div><button id="refreshButton" class="button ghost compact" type="button">Actualizar</button></header><div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody id="ordersTable"></tbody></table></div></article>
-      <article class="timeline-panel" id="traceability"><header><p class="eyebrow">TRAZABILIDAD · EVIDENCIA PRINCIPAL</p><h2>Últimos eventos</h2></header><ol id="eventTimeline"></ol></article>
-    </section>
-
     <details class="secondary-panel">
-      <summary>Funcionalidad secundaria: agentes con aprobación humana</summary>
-      <p>Los agentes proponen; no ejecutan escrituras externas. Úsalos únicamente si surge una pregunta directa.</p>
+      <summary>Capacidades técnicas secundarias — mostrar solo si preguntan</summary>
+      <p>La demo también conserva roles, agentes con aprobación humana, API de referencia y tres superficies. No forman parte del recorrido comercial principal.</p>
       <form id="agentForm">
         <label>Especialidad<select name="agent"><option>brand</option><option>catalog</option><option>crm</option><option>partnerships</option><option>marketing</option></select></label>
         <label>Objetivo<textarea name="goal" rows="3">Analiza el estado del demo y propone la siguiente acción comercial.</textarea></label>
-        <button class="button primary" type="submit">Generar propuesta</button>
+        <button class="button primary" type="submit">Generar propuesta sin ejecutar acciones</button>
       </form>
+      <div class="architecture-flow"><div><strong>Interfaz compartida</strong><span>Navegador · Windows · Android</span></div><b>→</b><div><strong>Contrato comercial</strong><span>catálogo · stock · CRM · pedidos</span></div><b>→</b><div class="branches"><span>Demo local persistente</span><span>API Fastify + PostgreSQL</span></div></div>
     </details>
-
-    <section class="architecture" id="architecture">
-      <div class="section-heading"><div><p class="eyebrow">ARQUITECTURA CONSOLIDADA</p><h2>La interfaz no decide el backend</h2></div><p>Las superficies comparten la misma experiencia. El adaptador de datos cambia según el entorno.</p></div>
-      <div class="architecture-flow"><div><strong>Interfaz única</strong><span>HTML · CSS · JavaScript</span></div><b>→</b><div><strong>Contrato comercial</strong><span>catálogo · stock · CRM · pedidos</span></div><b>→</b><div class="branches"><span>Demo local persistente</span><span>API Fastify + PostgreSQL</span></div></div>
-    </section>
   </main>
 
-  <footer><img src="./assets/logo.svg" alt="" width="30" height="30"><p><strong>Commerce Operating System</strong><br><span>Demo segura: toda acción externa requiere un adaptador y aprobación explícita.</span></p></footer>
+  <footer><img src="./assets/logo.svg" alt="" width="30" height="30"><p><strong>Commerce Operating System</strong><br><span>Demo conceptual: toda acción externa requiere un adaptador y aprobación explícita.</span></p></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="./app.js"></script>
 </body>
