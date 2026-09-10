@@ -56,7 +56,7 @@ Fastify aplica el mismo recorrido sobre PostgreSQL. Los pedidos reservan stock y
 13. Hub de integraciones.
 14. Auditoría y observabilidad.
 
-La demo `0.2.0` implementa un corte vertical de los módulos 1, 2, 4, 5, 6, 7, 8, 12 y 14. Los demás son límites arquitectónicos, no funcionalidades terminadas.
+La demo `0.3.0` implementa un corte vertical de los módulos 1, 2, 4, 5, 6, 7, 8, 12 y 14. Los demás son límites arquitectónicos, no funcionalidades terminadas. La interfaz presenta ese corte en seis pestañas guiadas; esta organización visual no amplía el alcance funcional.
 
 ## Invariantes del corte vertical
 

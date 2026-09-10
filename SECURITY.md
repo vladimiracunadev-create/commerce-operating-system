@@ -2,7 +2,7 @@
 
 ## Alcance actual
 
-Commerce OS `0.2.x` es una demo. No debe exponerse directamente a internet ni recibir información personal, tributaria o financiera real.
+Commerce OS `0.3.x` es una demo. No debe exponerse directamente a internet ni recibir información personal, tributaria o financiera real.
 
 ## Reporte responsable
 

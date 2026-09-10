@@ -2,6 +2,24 @@
 
 Todos los cambios relevantes de Commerce Operating System se documentan aquí.
 
+## 0.3.0 — 2026-09-09
+
+### Añadido
+
+- Navegación guiada mediante seis pestañas accesibles: Catálogo, Inventario, Cliente, Pedido, Pago simulado y Trazabilidad.
+- Texto orientado al cliente en cada paso: qué demuestra, qué no significa y qué queda pendiente para Fase 1.
+- Verificación de que solo una tarea principal permanece visible y que el recorrido admite teclado.
+
+### Cambiado
+
+- Interfaz de presentación simplificada para reducir carga visual y mantener capacidades técnicas dentro de secciones secundarias.
+- Smoke test actualizado para operar las seis pestañas en Chromium/Electron y regenerar las capturas de la reunión.
+
+### Seguridad
+
+- Se conservan sin cambios los adaptadores mock, permisos por rol y confirmación de restablecimiento.
+- Webpay, SII, ERP, multisucursal y procesos farmacéuticos continúan fuera del alcance implementado.
+
 ## 0.2.0 — 2026-09-09
 
 ### Añadido

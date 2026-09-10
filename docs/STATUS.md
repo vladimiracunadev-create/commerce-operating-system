@@ -23,7 +23,7 @@ Fecha de verificación documental: 2026-09-09.
 | Agentes | 🟡 | cinco perfiles, fallback seguro, LLM opcional |
 | RBAC | 🟡 | roles reales; identidad demostrada por encabezado o selector |
 | Restablecimiento | ✅ | estado inicial local y limpieza transaccional del servidor |
-| Modo de presentación conceptual | ✅ | recorrido visible de seis pasos, advertencias mock y capturas automatizadas |
+| Modo de presentación conceptual | ✅ | seis pestañas guiadas, una tarea visible por vez, advertencias mock y capturas automatizadas |
 
 ## Superficies
 

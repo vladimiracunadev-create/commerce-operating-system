@@ -1,6 +1,6 @@
 # Contratos de integración
 
-Estos contratos describen puntos de extensión. En `0.2.0` solo los adaptadores `mock`, `mock-sii` y el fallback de agentes están activos.
+Estos contratos describen puntos de extensión. En `0.3.0` solo los adaptadores `mock`, `mock-sii` y el fallback de agentes están activos.
 
 ## PaymentAdapter
 - createPayment(order)

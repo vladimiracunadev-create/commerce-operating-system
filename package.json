@@ -1,6 +1,6 @@
 {
   "name": "commerce-operating-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Sistema operativo comercial modular con demo web, Windows y Android.",
   "author": "Vladimir Acuña",
