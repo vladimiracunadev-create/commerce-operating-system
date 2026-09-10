@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#07111f">
   <meta name="description" content="Commerce Operating System v0.3.0: demo conceptual guiada para conversar sobre catálogo, inventario, clientes, pedidos y trazabilidad.">
+  <meta property="og:title" content="Commerce Operating System — Demo conceptual">
+  <meta property="og:description" content="Un recorrido comercial guiado y verificable para conversar sobre la operación de una farmacia, sin prometer integraciones reales.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://vladimiracunadev-create.github.io/commerce-operating-system/">
   <title>Commerce Operating System — Demo conceptual v0.3.0</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -15,32 +19,35 @@
     <nav aria-label="Navegación principal">
       <a href="#recorrido">Recorrido</a>
       <a href="#alcance">Alcance</a>
-      <a href="#descargas">Descargas</a>
+      <a href="#evidencia">Evidencia</a>
+      <a class="nav-cta" href="demo/">Abrir demo</a>
     </nav>
   </header>
 
   <main id="contenido">
     <section class="hero" id="inicio">
       <div class="hero-copy">
-        <p class="eyebrow">COMMERCE OPERATING SYSTEM · v0.3.0</p>
-        <h1>Una conversación comercial,<br><span>paso a paso.</span></h1>
+        <p class="eyebrow status"><span></span> DEMO CONCEPTUAL · v0.3.0 · LISTA PARA PRESENTAR</p>
+        <h1>Entender la operación<br><span>antes de construir.</span></h1>
         <p class="lead">Demo conceptual guiada para conversar sobre catálogo, inventario, clientes, pedidos y trazabilidad. No corresponde al sistema definitivo de una farmacia.</p>
         <div class="actions">
           <a class="button primary" href="demo/">Probar demo conceptual</a>
           <a class="button" href="https://github.com/vladimiracunadev-create/commerce-operating-system/blob/main/docs/REUNION_FARMACIA_2026-09-10.md">Abrir guía de reunión</a>
           <a class="text-link" href="https://github.com/vladimiracunadev-create/commerce-operating-system">Ver repositorio →</a>
         </div>
+        <p class="micro-proof"><strong>3–5 minutos</strong><span>Una tarea visible por etapa</span><span>Datos completamente ficticios</span></p>
       </div>
       <figure class="hero-shot">
-        <img src="assets/demo-conceptual-overview.png" alt="Inicio de Commerce OS con recorrido guiado en seis pestañas" width="782" height="527">
+        <div class="shot-bar"><i></i><i></i><i></i><span>Commerce OS · demo local</span></div>
+        <div class="shot-frame"><img src="assets/demo-conceptual-overview.png" alt="Inicio de Commerce OS con recorrido guiado en seis pestañas" width="782" height="527"><div class="shot-note"><small>RUTA DE REUNIÓN</small><strong>01 / 06 · Catálogo</strong><span>Avance guiado, sin saltos.</span></div></div>
         <figcaption>Interfaz real verificada en Chromium/Electron.</figcaption>
       </figure>
     </section>
 
     <section class="truth-strip" aria-label="Resumen verificable">
-      <div><strong>6</strong><span>conceptos guiados</span></div>
-      <div><strong>3</strong><span>superficies de aplicación</span></div>
-      <div><strong>2</strong><span>motores de datos</span></div>
+      <div><strong>11</strong><span>pruebas deterministas</span></div>
+      <div><strong>6</strong><span>etapas guiadas</span></div>
+      <div><strong>3</strong><span>aplicaciones verificadas</span></div>
       <div><strong>0</strong><span>acciones externas reales</span></div>
     </section>
 
@@ -49,6 +56,7 @@
         <div><p class="eyebrow">RECORRIDO DE 3 A 5 MINUTOS</p><h2>Seis conceptos, una historia</h2></div>
         <p>La interfaz muestra una tarea principal por vez y explica qué demuestra cada concepto y qué debe levantarse durante la Fase 1.</p>
       </div>
+      <div class="journey-line" aria-label="Ruta de la demostración"><span>Catálogo</span><b>→</b><span>Inventario</span><b>→</b><span>Cliente</span><b>→</b><span>Pedido</span><b>→</b><span>Pago simulado</span><b>→</b><span>Trazabilidad</span></div>
       <ol class="steps">
         <li><span>01</span><div><strong>Catálogo</strong><p>Ordenar productos mediante SKU, nombre y precio ficticios.</p></div></li>
         <li><span>02</span><div><strong>Inventario</strong><p>Relacionar unidades, reservas y disponibilidad.</p></div></li>
@@ -71,10 +79,15 @@
       </div>
     </section>
 
-    <section class="section scope" id="alcance">
+    <section class="section" id="alcance">
+      <div class="section-heading scope-heading">
+        <div><p class="eyebrow">MADUREZ VISIBLE</p><h2>Sin letra pequeña</h2></div>
+        <p>Cada capacidad se presenta según su estado real para evitar confundir una referencia funcional con un sistema productivo.</p>
+      </div>
+      <div class="scope">
       <div class="scope-card safe">
-        <p class="eyebrow">SÍ DEMUESTRA</p>
-        <h2>Un flujo conceptual verificable</h2>
+        <span class="maturity ready">FUNCIONAL</span>
+        <h3>Lo que sí demuestra</h3>
         <ul>
           <li>Catálogo, stock, cliente, pedido y eventos.</li>
           <li>Reserva y descuento de inventario.</li>
@@ -83,26 +96,38 @@
         </ul>
       </div>
       <div class="scope-card warning">
-        <p class="eyebrow">SIMULADO O PENDIENTE</p>
-        <h2>No confundir con producción</h2>
+        <span class="maturity mock">SIMULADO</span>
+        <h3>Acciones sin efecto real</h3>
         <ul>
           <li><strong>Pago simulado:</strong> no mueve dinero ni utiliza Webpay real.</li>
           <li><strong>Documento tributario simulado:</strong> no emite ante el SII.</li>
-          <li><strong>ERP:</strong> pendiente de levantamiento e integración en Fase 1.</li>
-          <li>Multisucursal, recetas y procesos farmacéuticos no están implementados.</li>
+          <li>Los adaptadores mock conservan el flujo sin credenciales ni secretos.</li>
         </ul>
+      </div>
+      <div class="scope-card future">
+        <span class="maturity pending">FASE 1</span>
+        <h3>Lo que falta levantar</h3>
+        <ul>
+          <li><strong>ERP:</strong> pendiente de levantamiento e integración en Fase 1.</li>
+          <li>Multisucursal, recetas y procesos farmacéuticos.</li>
+          <li>Reglas, roles y excepciones propias de la farmacia.</li>
+        </ul>
+      </div>
       </div>
     </section>
 
-    <section class="section evidence">
+    <section class="section evidence" id="evidencia">
       <figure>
         <img src="assets/demo-conceptual-flow.png" alt="Trazabilidad de un pedido pagado con eventos de demostración" width="782" height="527">
         <figcaption>Pedido, pago mock y trazabilidad después del recorrido automatizado.</figcaption>
       </figure>
-      <div>
+      <div class="evidence-copy">
         <p class="eyebrow">EVIDENCIA Y REUNIÓN</p>
         <h2>Primero conversar; después definir</h2>
         <p>La demostración sirve para visualizar conceptos y formular preguntas. La Fase 1 determina cuáles aplican, cuáles cambian y cuáles no corresponden a la operación real.</p>
+        <div class="checks" aria-label="Validaciones del proyecto">
+          <span><b>✓</b> CI multiplataforma</span><span><b>✓</b> Smoke end-to-end</span><span><b>✓</b> Pages publicada</span>
+        </div>
         <a class="button primary" href="https://github.com/vladimiracunadev-create/commerce-operating-system/blob/main/docs/REUNION_FARMACIA_2026-09-10.md">Leer guía canónica</a>
       </div>
     </section>

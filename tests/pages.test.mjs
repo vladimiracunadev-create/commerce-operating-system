@@ -13,6 +13,12 @@ test('la landing explica producto, reunión y límites de la demo', async () => 
   assert.match(html, /ERP:.*pendiente de levantamiento/s);
   assert.match(html, /CommerceOS-Demo-Windows-0\.3\.0\.exe/);
   assert.match(html, /CommerceOS-Demo-Android-v0\.3\.0\.apk/);
+  assert.match(html, /11.*pruebas deterministas/s);
+  assert.match(html, /FUNCIONAL/);
+  assert.match(html, /SIMULADO/);
+  assert.match(html, /FASE 1/);
+  assert.match(html, /CI multiplataforma/);
+  assert.match(html, /Pages publicada/);
 });
 
 test('Pages publica landing, capturas y demo con acciones fijadas por SHA', async () => {
