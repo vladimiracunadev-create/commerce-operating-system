@@ -16,6 +16,10 @@ Reporta vulnerabilidades mediante un aviso privado al propietario del repositori
 - Electron no expone Node a la interfaz;
 - el rol enviado en `x-demo-role` demuestra autorización, pero no autentica identidad.
 
+## Uso seguro durante la reunión
+
+La guía canónica es [docs/REUNION_FARMACIA_2026-09-10.md](docs/REUNION_FARMACIA_2026-09-10.md). Para el recorrido comercial se recomienda **Demo local**, sin infraestructura ni datos reales. Docker es una validación o respaldo opcional: sus puertos no deben exponerse a internet y solo debe utilizarse en una red de confianza.
+
 ## Antes de producción
 
 Se requieren OIDC/MFA, sesiones seguras, autorización multi-tenant, almacenamiento de secretos, rate limiting, validación exhaustiva, CSP por superficie, TLS, backups, observabilidad, revisión de dependencias, firma de binarios y pruebas de seguridad específicas de cada proveedor.

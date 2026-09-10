@@ -2,7 +2,7 @@
 
 ## DEMO PARA REUNIÓN FARMACIA — 3 A 5 MINUTOS
 
-Esta sección es una variante de presentación; no sustituye el guion genérico ni representa el sistema definitivo del cliente.
+La fuente canónica para esta reunión es [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md). Esta sección conserva un resumen operativo; ante cualquier diferencia prevalece la guía de reunión. No representa el sistema definitivo del cliente.
 
 1. Pulsa **Restablecer demo** y confirma.
 2. Recorre las pestañas de izquierda a derecha; solo una tarea principal permanece visible.
@@ -16,7 +16,7 @@ Esta sección es una variante de presentación; no sustituye el guion genérico 
 
 Cada pestaña contiene texto para explicar al cliente qué demuestra y qué no significa o queda pendiente de Fase 1. No mostrar más salvo pregunta directa. Las opciones técnicas y los agentes están colapsados; los agentes siempre requieren aprobación humana.
 
-Consulta [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md) para las frases de apertura/cierre, límites y Plan B.
+Usa **Demo local** como recorrido principal. Docker queda fuera del guion de 3 a 5 minutos y se reserva para validación previa o respaldo técnico opcional.
 
 ## Guion genérico de demo operativa
 

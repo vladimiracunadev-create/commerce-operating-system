@@ -13,6 +13,8 @@
 
 Las tres interfaces deben permitir el recorrido definido en [DEMO.md](DEMO.md). No se acepta una edición móvil recortada: el layout cambia, no las capacidades del demo.
 
+Para la reunión de farmacia, el orden de presentación, mensajes y Plan B se definen en [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md). La superficie local es principal y el servidor Docker es opcional.
+
 ## Windows
 
 Electron carga exclusivamente los activos locales del repositorio. La ventana activa:

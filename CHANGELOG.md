@@ -2,6 +2,16 @@
 
 Todos los cambios relevantes de Commerce Operating System se documentan aquí.
 
+## No publicado — documentación posterior a 0.3.0
+
+### Cambiado
+
+- La guía de reunión de la farmacia se declara como referencia canónica para el recorrido local de 3 a 5 minutos.
+- Docker se documenta como validación técnica previa y respaldo opcional, no como requisito de la presentación comercial.
+- Se añade una landing pública autocontenida con demo web, capturas, límites, guía canónica y descargas de `v0.3.0` mediante GitHub Pages.
+
+Esta sección no modifica el contenido histórico ni el tag de `0.3.0`.
+
 ## 0.3.0 — 2026-09-09
 
 ### Añadido

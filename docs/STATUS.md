@@ -1,6 +1,6 @@
 # Estado verificable
 
-Fecha de verificación documental: 2026-09-09.
+Fecha de verificación documental y funcional: 2026-09-10.
 
 ## Leyenda
 
@@ -29,11 +29,14 @@ Fecha de verificación documental: 2026-09-09.
 
 | Superficie | Estado | Verificación |
 |---|---:|---|
-| Navegador / localhost | ✅ | recorrido interactivo y pruebas del núcleo |
+| Navegador / localhost | ✅ | `pnpm test:web`: seis pestañas, recorrido completo, mocks, eventos y rechazo por rol |
 | PWA | ✅ | manifest, service worker y modo standalone |
 | Windows | ✅ | Electron, sandbox y workflow que produce EXE portable |
 | Android | ✅ | Capacitor y workflow que produce APK debug |
-| Backend Docker | ✅ | Compose, PostgreSQL, Fastify y FastAPI |
+| Backend Docker | ✅ | `node scripts/smoke-api.mjs`: API, PostgreSQL ready, pedido pagado, pago/documento mock y agente safe-fallback |
+| GitHub Pages | ✅ | landing autocontenida, capturas verificadas, demo local ejecutable y workflow dedicado |
+
+Para la reunión, la fuente canónica es [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md). El modo local es principal; Docker demuestra la instancia de referencia y funciona como validación o respaldo opcional.
 
 ## Producción
 

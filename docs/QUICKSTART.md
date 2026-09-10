@@ -1,5 +1,7 @@
 # Inicio rápido
 
+Para la reunión del 10 de septiembre de 2026, sigue como fuente canónica [REUNION_FARMACIA_2026-09-10.md](REUNION_FARMACIA_2026-09-10.md). La demo local es el recorrido principal de 3 a 5 minutos; Docker es una validación técnica previa o respaldo opcional.
+
 ## Elige una superficie
 
 | Quiero… | Comando | Requisitos |
@@ -32,6 +34,8 @@ corepack pnpm demo:local
 Abre `http://127.0.0.1:4173`. Elige **Demo local**. El producto, cliente y stock inicial permiten comenzar desde el paso 04 o recorrer todo desde el paso 01.
 
 ## Stack con servidor
+
+Este perfil no es necesario para la presentación comercial. Úsalo para verificar API, PostgreSQL y agentes antes de la reunión, o como respaldo técnico si surge una pregunta específica.
 
 ```bash
 docker compose up --build

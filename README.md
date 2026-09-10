@@ -13,7 +13,7 @@
 
 ![Versión](https://img.shields.io/badge/versión-0.3.0-55e6a5?style=for-the-badge)
 ![Superficies](https://img.shields.io/badge/superficies-Web_·_Windows_·_Android-36a3ff?style=for-the-badge)
-![Pruebas](https://img.shields.io/badge/pruebas-9_verdes-2ea44f?style=for-the-badge)
+![Pruebas](https://img.shields.io/badge/pruebas-11_verdes-2ea44f?style=for-the-badge)
 ![Modo](https://img.shields.io/badge/modo-demo_segura-f8b84e?style=for-the-badge)
 
 [Inicio rápido](docs/QUICKSTART.md) · [Guion de demo](docs/DEMO.md) · [Apoyo para reunión](docs/REUNION_FARMACIA_2026-09-10.md) · [Estado verificable](docs/STATUS.md) · [Plataformas](docs/PLATFORMS.md) · [Instancias tecnológicas](docs/TECHNOLOGY-INSTANCES.md) · [Arquitectura](docs/ARCHITECTURE.md) · [Seguridad](SECURITY.md)
@@ -26,6 +26,11 @@
 
 > [!IMPORTANT]
 > Pagos, documentos tributarios y propuestas de IA son **simulados**. El demo no mueve dinero, no emite ante el SII y no publica campañas. Los conectores reales son contratos de integración, no funcionalidades implícitas.
+
+> [!TIP]
+> Para la reunión con la farmacia, la guía canónica es [Reunión farmacia — demo conceptual](docs/REUNION_FARMACIA_2026-09-10.md): usa la demo local como recorrido principal de 3 a 5 minutos. Docker sirve para validación técnica previa o respaldo opcional, no como requisito de la presentación.
+
+La presentación pública del producto y una copia ejecutable de la demo están disponibles en [GitHub Pages](https://vladimiracunadev-create.github.io/commerce-operating-system/).
 
 ## Qué funciona hoy
 
@@ -60,6 +65,8 @@ corepack pnpm demo:local
 Abre [http://localhost:4173](http://localhost:4173). El estado se guarda en el almacenamiento local del navegador.
 
 ### Stack de referencia — API + PostgreSQL + agentes
+
+Este perfil es opcional para la reunión. Úsalo antes de presentar para validar la arquitectura o durante la conversación solo si el cliente pregunta por el backend.
 
 ```bash
 docker compose up --build
@@ -168,7 +175,7 @@ docs/              # producto, demo, plataformas y arquitectura
 | Comando | Resultado |
 |---|---|
 | `pnpm demo:local` | demo en `127.0.0.1:4173` |
-| `pnpm test` | invariantes funcionales del motor local |
+| `pnpm test` | 11 pruebas de núcleo, presentación, documentación y Pages |
 | `pnpm build:api` | compilación estricta TypeScript |
 | `pnpm check` | núcleo, API, documentación y sincronía del bundle |
 | `pnpm desktop` | aplicación Windows en modo desarrollo |
@@ -189,6 +196,8 @@ Consulta [SECURITY.md](SECURITY.md) antes de conectar proveedores reales.
 
 | Documento | Para qué sirve |
 |---|---|
+| [Sitio del producto](https://vladimiracunadev-create.github.io/commerce-operating-system/) | explicación pública, demo web y descargas verificadas |
+| [Guía canónica de la reunión](docs/REUNION_FARMACIA_2026-09-10.md) | recorrido comercial de 3–5 minutos, mensajes, preguntas y Plan B |
 | [Inicio rápido](docs/QUICKSTART.md) | elegir y levantar una superficie |
 | [Guion de demo](docs/DEMO.md) | probar el recorrido paso a paso |
 | [Estado](docs/STATUS.md) | separar operativo, simulado y pendiente |

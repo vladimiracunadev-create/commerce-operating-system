@@ -4,6 +4,16 @@ Fecha: 10 de septiembre de 2026, 12:00
 
 Duración recomendada de la demo: 3 a 5 minutos.
 
+Este documento es la **guía canónica de la reunión**. Si otro documento resume el recorrido de forma diferente, prevalece esta guía.
+
+## Orden de preferencia
+
+1. **Principal — Demo local:** usar `http://127.0.0.1:4173`; no requiere Docker, red ni base de datos.
+2. **Respaldo visual:** usar las capturas incluidas en este documento si la interfaz no puede abrirse.
+3. **Opcional — Docker:** utilizarlo para una validación técnica previa o si el cliente pregunta por API, PostgreSQL o agentes. No forma parte del recorrido comercial de 3 a 5 minutos.
+
+Página pública de apoyo: <https://vladimiracunadev-create.github.io/commerce-operating-system/>. Incluye explicación del producto, una copia web ejecutable, capturas y enlaces a las descargas de `v0.3.0`.
+
 ## A. Qué es la demo
 
 Commerce Operating System es un laboratorio tecnológico propio utilizado para demostrar conceptos de operación comercial.
@@ -88,6 +98,17 @@ Todos los datos de la demo son ficticios. No ingresar RUT, pacientes, recetas, c
 ## PLAN B
 
 Si el recorrido presenta un problema, recargar la página y pulsar **Restablecer demo**. Si la página quedó en modo API, abrir **Opciones de demostración** y elegir **Demo local**. Si el problema continúa, apoyar la conversación con las capturas anteriores. La reunión debe continuar centrada en el levantamiento, no en reparar la aplicación.
+
+## Validación Docker opcional — antes de la reunión
+
+Docker no es necesario para presentar. Si se desea validar el backend de referencia antes de comenzar:
+
+```bash
+docker compose up -d --build
+node scripts/smoke-api.mjs
+```
+
+Resultado esperado: API activa, PostgreSQL `ready`, pedido `paid`, pago `approved`, documento mock `issued` y agente `safe-fallback`. Mantener los puertos en una red de confianza; no exponer esta demo directamente a internet.
 
 ## E. Frase de cierre
 
