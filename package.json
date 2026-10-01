@@ -30,7 +30,7 @@
   "devDependencies": {
     "@capacitor/android": "8.5.1",
     "@capacitor/cli": "8.5.1",
-    "@capacitor/core": "8.5.1",
+    "@capacitor/core": "8.5.2",
     "electron": "44.1.0",
     "electron-builder": "26.15.3"
   },
