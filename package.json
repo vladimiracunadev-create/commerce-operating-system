@@ -28,7 +28,7 @@
     "android:build": "pnpm android:sync && cd android && gradlew.bat assembleDebug"
   },
   "devDependencies": {
-    "@capacitor/android": "8.5.1",
+    "@capacitor/android": "8.5.2",
     "@capacitor/cli": "8.5.1",
     "@capacitor/core": "8.5.1",
     "electron": "44.1.0",
